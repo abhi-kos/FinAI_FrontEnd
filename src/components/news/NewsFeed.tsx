@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Filter, Calendar, X } from "lucide-react";
+import { Filter, Calendar, X, ChevronUp, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import NewsCard, { NewsItem } from "./NewsCard";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
