@@ -1,6 +1,5 @@
-
 import { 
-  Home, 
+  Terminal, 
   Newspaper, 
   Star, 
   Settings, 
@@ -46,7 +45,7 @@ const AppSidebar = () => {
   const location = useLocation();
   
   const menuItems = [
-    { icon: <Home size={20} />, label: "Home", to: "/" },
+    { icon: <Terminal size={20} />, label: "Console", to: "/" },
     { icon: <Newspaper size={20} />, label: "News Feed", to: "/news" },
     { icon: <Star size={20} />, label: "Favorites", to: "/favorites" },
     { icon: <Settings size={20} />, label: "Settings", to: "/settings" },
