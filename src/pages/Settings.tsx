@@ -1,15 +1,15 @@
 
 import MainLayout from "@/components/layout/MainLayout";
-import ChatInterface from "@/components/chat/ChatInterface";
+import SettingsView from "@/components/settings/SettingsView";
 
-const Index = () => {
+const Settings = () => {
   return (
     <MainLayout>
       <div className="h-full">
-        <ChatInterface />
+        <SettingsView />
       </div>
     </MainLayout>
   );
 };
 
-export default Index;
+export default Settings;

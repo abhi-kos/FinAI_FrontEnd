@@ -1,15 +1,15 @@
 
 import MainLayout from "@/components/layout/MainLayout";
-import ChatInterface from "@/components/chat/ChatInterface";
+import FavoritesView from "@/components/favorites/FavoritesView";
 
-const Index = () => {
+const Favorites = () => {
   return (
     <MainLayout>
       <div className="h-full">
-        <ChatInterface />
+        <FavoritesView />
       </div>
     </MainLayout>
   );
 };
 
-export default Index;
+export default Favorites;

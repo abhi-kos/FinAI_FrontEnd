@@ -1,15 +1,15 @@
 
 import MainLayout from "@/components/layout/MainLayout";
-import ChatInterface from "@/components/chat/ChatInterface";
+import NewsFeed from "@/components/news/NewsFeed";
 
-const Index = () => {
+const News = () => {
   return (
     <MainLayout>
       <div className="h-full">
-        <ChatInterface />
+        <NewsFeed />
       </div>
     </MainLayout>
   );
 };
 
-export default Index;
+export default News;
