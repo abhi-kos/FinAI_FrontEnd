@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ChatMessage from "./ChatMessage";
 import { cn } from "@/lib/utils";
-import RecentSearches from "./RecentSearches";
 import SourcesPanel from "./SourcesPanel";
 
 interface Message {
@@ -108,9 +107,12 @@ const ChatInterface = () => {
     
     if ((!inputValue.trim() && attachments.length === 0) || isLoading) return;
     
-    // Store search in recent searches
+    // Store search in recent searches - this would need to be lifted to a global state 
+    // or context in a real application to sync with the sidebar
     if (inputValue.trim()) {
       setRecentSearches(prev => [inputValue, ...prev.slice(0, 4)]);
+      // This would update the recent searches in the sidebar
+      // In a real app, you would use a context or state management solution
     }
     
     const userMessage: Message = {
@@ -250,12 +252,6 @@ const ChatInterface = () => {
               <div ref={messagesEndRef} />
             </div>
           </div>
-          
-          {/* Recent searches */}
-          <RecentSearches 
-            searches={recentSearches} 
-            onSelectSearch={setSuggestedQuery} 
-          />
           
           {/* Input area */}
           <div className="p-4 border-t border-border">

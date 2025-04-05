@@ -5,7 +5,8 @@ import {
   Star, 
   Settings, 
   ChevronLeft, 
-  ChevronRight 
+  ChevronRight,
+  ArrowUp 
 } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -45,6 +46,14 @@ const AppSidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
   
+  // Recent searches data
+  const recentSearches = [
+    "Compare HDFC Bank vs ICICI Bank performance",
+    "Latest earnings for Reliance Industries",
+    "Saudi Aramco market share analysis",
+    "Debt to equity ratios in UAE banking sector"
+  ];
+  
   const menuItems = [
     { icon: <Terminal size={20} />, label: "Console", to: "/" },
     { icon: <Newspaper size={20} />, label: "News Feed", to: "/news" },
@@ -79,6 +88,32 @@ const AppSidebar = () => {
             collapsed={collapsed}
           />
         ))}
+        
+        {/* Recent Searches Section */}
+        {!collapsed && (
+          <div className="mt-6 px-2">
+            <div className="flex items-center gap-2 mb-2">
+              <ArrowUp size={14} className="text-sidebar-foreground/70" />
+              <h3 className="text-xs font-medium text-sidebar-foreground/70">Recent Searches</h3>
+            </div>
+            <div className="space-y-1">
+              {recentSearches.map((search, index) => (
+                <Button
+                  key={index}
+                  variant="ghost"
+                  size="sm"
+                  className="w-full h-7 text-xs justify-start truncate text-sidebar-foreground"
+                  onClick={() => {
+                    // We'll handle this later with context or state management
+                    console.log("Selected search:", search);
+                  }}
+                >
+                  {search}
+                </Button>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
       
       <div className="p-2 border-t border-sidebar-border">
