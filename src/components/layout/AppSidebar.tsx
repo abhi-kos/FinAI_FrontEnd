@@ -181,21 +181,25 @@ const AppSidebar = () => {
         )}
       </div>
       
-      {/* Footer with Settings and Help - Moved to bottom */}
+      {/* Footer with Settings and Help - Fixed alignment */}
       <div className="p-2 border-t border-sidebar-border mt-auto">
-        <div className="flex items-center justify-between mb-2">
+        <div className={cn(
+          "flex",
+          collapsed ? "flex-col space-y-2" : "items-center justify-between"
+        )}>
           {/* Settings Button */}
           <Link to="/settings">
             <Button 
               variant="ghost" 
-              size="icon" 
+              size={collapsed ? "icon" : "sm"}
               className={cn(
                 "text-sidebar-foreground hover:bg-sidebar-accent/50",
-                location.pathname === "/settings" && "bg-sidebar-accent text-sidebar-accent-foreground"
+                location.pathname === "/settings" && "bg-sidebar-accent text-sidebar-accent-foreground",
+                collapsed ? "w-full" : "gap-2"
               )}
             >
               <Settings size={20} />
-              {!collapsed && <span className="ml-2">Settings</span>}
+              {!collapsed && <span>Settings</span>}
             </Button>
           </Link>
           
@@ -203,11 +207,15 @@ const AppSidebar = () => {
           <Link to="/help">
             <Button 
               variant="ghost" 
-              size="icon" 
-              className="text-sidebar-foreground hover:bg-sidebar-accent/50"
+              size={collapsed ? "icon" : "sm"}
+              className={cn(
+                "text-sidebar-foreground hover:bg-sidebar-accent/50",
+                location.pathname === "/help" && "bg-sidebar-accent text-sidebar-accent-foreground",
+                collapsed ? "w-full" : "gap-2"
+              )}
             >
               <HelpCircle size={20} />
-              {!collapsed && <span className="ml-2">Help</span>}
+              {!collapsed && <span>Help</span>}
             </Button>
           </Link>
         </div>
@@ -215,9 +223,9 @@ const AppSidebar = () => {
         {/* Collapse Toggle Button */}
         <Button 
           variant="ghost" 
-          size="icon" 
+          size="sm"
           onClick={() => setCollapsed(!collapsed)}
-          className="w-full flex justify-center text-sidebar-foreground hover:bg-sidebar-accent/50"
+          className="w-full flex justify-center text-sidebar-foreground hover:bg-sidebar-accent/50 mt-2"
         >
           {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
         </Button>
