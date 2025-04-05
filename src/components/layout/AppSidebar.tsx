@@ -6,12 +6,15 @@ import {
   Settings, 
   ChevronLeft, 
   ChevronRight,
-  ArrowUp 
+  ArrowUp,
+  LineChart,
+  HelpCircle
 } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 interface SidebarItemProps {
   icon: React.ReactNode;
@@ -42,8 +45,18 @@ const SidebarItem = ({ icon, label, to, active, collapsed }: SidebarItemProps) =
   );
 };
 
+// Mock watchlist data
+const watchlistItems = [
+  { symbol: "AAPL", name: "Apple Inc.", price: 187.68, change: 1.25 },
+  { symbol: "MSFT", name: "Microsoft Corp.", price: 415.32, change: -0.78 },
+  { symbol: "AMZN", name: "Amazon.com Inc.", price: 176.54, change: 2.45 },
+  { symbol: "GOOGL", name: "Alphabet Inc.", price: 156.87, change: 0.34 },
+  { symbol: "META", name: "Meta Platforms Inc.", price: 453.21, change: -1.42 }
+];
+
 const AppSidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [watchlistOpen, setWatchlistOpen] = useState(false);
   const location = useLocation();
   
   // Recent searches data
@@ -54,11 +67,10 @@ const AppSidebar = () => {
     "Debt to equity ratios in UAE banking sector"
   ];
   
-  const menuItems = [
+  const mainMenuItems = [
     { icon: <Terminal size={20} />, label: "Console", to: "/" },
     { icon: <Newspaper size={20} />, label: "News Feed", to: "/news" },
     { icon: <Star size={20} />, label: "Favorites", to: "/favorites" },
-    { icon: <Settings size={20} />, label: "Settings", to: "/settings" },
   ];
 
   return (
@@ -78,7 +90,8 @@ const AppSidebar = () => {
       </div>
       
       <div className="flex-1 py-4 px-2 overflow-y-auto scrollbar-hide">
-        {menuItems.map((item) => (
+        {/* Main menu items */}
+        {mainMenuItems.map((item) => (
           <SidebarItem
             key={item.to}
             icon={item.icon}
@@ -88,6 +101,58 @@ const AppSidebar = () => {
             collapsed={collapsed}
           />
         ))}
+        
+        {/* Watchlist Section - New Addition */}
+        <div className="mt-6 mb-2 px-1">
+          <Collapsible 
+            open={watchlistOpen && !collapsed} 
+            onOpenChange={setWatchlistOpen} 
+            className="w-full"
+          >
+            <CollapsibleTrigger asChild>
+              <Button 
+                variant="ghost" 
+                className={cn(
+                  "w-full justify-start mb-2 relative",
+                  watchlistOpen && !collapsed ? "bg-sidebar-accent text-sidebar-accent-foreground" : "text-sidebar-foreground hover:bg-sidebar-accent/50",
+                )}
+              >
+                <div className="flex items-center">
+                  <div className="mr-2"><LineChart size={20} /></div>
+                  {!collapsed && <span>Watchlist</span>}
+                </div>
+                {!collapsed && (
+                  <div className="ml-auto">
+                    {watchlistOpen ? 
+                      <ChevronLeft size={16} /> : 
+                      <ChevronRight size={16} />
+                    }
+                  </div>
+                )}
+              </Button>
+            </CollapsibleTrigger>
+            
+            <CollapsibleContent className="space-y-2">
+              {!collapsed && watchlistItems.map((item) => (
+                <div 
+                  key={item.symbol} 
+                  className="flex items-center justify-between px-2 py-1 text-xs rounded hover:bg-sidebar-accent/30 cursor-pointer"
+                >
+                  <div className="flex flex-col">
+                    <span className="font-medium">{item.symbol}</span>
+                    <span className="text-sidebar-foreground/70 text-[10px] truncate max-w-32">{item.name}</span>
+                  </div>
+                  <div className="flex flex-col items-end">
+                    <span className="font-medium">${item.price}</span>
+                    <span className={item.change >= 0 ? "text-green-500" : "text-red-500"}>
+                      {item.change > 0 ? "+" : ""}{item.change}%
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </CollapsibleContent>
+          </Collapsible>
+        </div>
         
         {/* Recent Searches Section */}
         {!collapsed && (
@@ -116,7 +181,38 @@ const AppSidebar = () => {
         )}
       </div>
       
-      <div className="p-2 border-t border-sidebar-border">
+      {/* Footer with Settings and Help - Moved to bottom */}
+      <div className="p-2 border-t border-sidebar-border mt-auto">
+        <div className="flex items-center justify-between mb-2">
+          {/* Settings Button */}
+          <Link to="/settings">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className={cn(
+                "text-sidebar-foreground hover:bg-sidebar-accent/50",
+                location.pathname === "/settings" && "bg-sidebar-accent text-sidebar-accent-foreground"
+              )}
+            >
+              <Settings size={20} />
+              {!collapsed && <span className="ml-2">Settings</span>}
+            </Button>
+          </Link>
+          
+          {/* Help Button */}
+          <Link to="/help">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="text-sidebar-foreground hover:bg-sidebar-accent/50"
+            >
+              <HelpCircle size={20} />
+              {!collapsed && <span className="ml-2">Help</span>}
+            </Button>
+          </Link>
+        </div>
+        
+        {/* Collapse Toggle Button */}
         <Button 
           variant="ghost" 
           size="icon" 
