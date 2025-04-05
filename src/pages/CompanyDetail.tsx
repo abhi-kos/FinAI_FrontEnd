@@ -29,7 +29,7 @@ const CompanyDetail = () => {
         >
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-2xl font-bold">Company Analysis</h1>
-            <TabsList>
+            <TabsList className="flex-shrink-0">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="competitors">Competitors</TabsTrigger>
               <TabsTrigger value="news">News</TabsTrigger>
@@ -37,7 +37,7 @@ const CompanyDetail = () => {
             </TabsList>
           </div>
           
-          <ScrollArea className="h-[calc(100vh-12rem)]">
+          <ScrollArea className="h-[calc(100vh-12rem)] pr-2">
             <div className="pr-4 pb-6">
               <TabsContent value="overview" className="mt-0">
                 <CompanyOverview companyId={id || ""} />

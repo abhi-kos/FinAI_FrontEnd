@@ -97,7 +97,7 @@ const FavoriteCard = ({ item, onRemove }: FavoriteCardProps) => {
       
       <CardContent className="flex-1">
         <div className="flex justify-between items-center">
-          <div className="text-xl font-semibold truncate">
+          <div className="text-xl font-semibold break-words min-w-0 mr-2">
             {formatPrice(item.price, item.currency)}
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
@@ -150,13 +150,13 @@ const FavoriteCard = ({ item, onRemove }: FavoriteCardProps) => {
                 <div className="space-y-2">
                   <div className="grid grid-cols-2 gap-1 text-sm">
                     <div className="text-muted-foreground">Currency:</div>
-                    <div className="truncate">{item.currency}</div>
+                    <div className="overflow-hidden text-ellipsis">{item.currency}</div>
                     <div className="text-muted-foreground">Market:</div>
-                    <div className="truncate">{item.market}</div>
+                    <div className="overflow-hidden text-ellipsis">{item.market}</div>
                     {item.sector && (
                       <>
                         <div className="text-muted-foreground">Sector:</div>
-                        <div className="truncate">{item.sector}</div>
+                        <div className="overflow-hidden text-ellipsis">{item.sector}</div>
                       </>
                     )}
                   </div>
