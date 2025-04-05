@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Send, Mic, X, PaperclipIcon, ExternalLink, Filter, FileText, BarChart, Newspaper, FileArchive, Info, ArrowDown, ArrowUp, Database } from "lucide-react";
+import { Send, Mic, X, PaperclipIcon, ExternalLink, Filter, FileText, BarChart, Newspaper, FileArchive, Info, ArrowDown, ArrowUp, Database, Globe, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ChatMessage from "./ChatMessage";
@@ -26,7 +26,7 @@ interface Attachment {
   type: string;
 }
 
-type SourceType = "Deep Web" | "Internal" | "External" | "SEC Filings" | "Transcripts" | "Market Data" | "News and Media";
+type SourceType = "Deep Web" | "Internal" | "External" | "SEC Filings" | "Transcripts" | "Market Data" | "News and Media" | "Real-time Web" | "Deep-Search";
 
 const formatTime = () => {
   const now = new Date();
@@ -311,6 +311,8 @@ const ChatInterface = () => {
                   { label: "Market Data", icon: <BarChart size={14} /> },
                   { label: "News and Media", icon: <Newspaper size={14} /> },
                   { label: "Internal", icon: <Database size={14} /> },
+                  { label: "Real-time Web", icon: <Globe size={14} /> },
+                  { label: "Deep-Search", icon: <Search size={14} /> },
                 ].map((bubble) => (
                   <Button
                     key={bubble.label}
