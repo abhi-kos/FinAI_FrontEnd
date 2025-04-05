@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
@@ -50,7 +49,6 @@ const CompanyOverview = ({ companyId }: CompanyOverviewProps) => {
   const [company, setCompany] = useState<CompanyDetails | null>(null);
 
   useEffect(() => {
-    // In a real app, this would be an API call
     const companyData = mockCompanyData.find(c => c.id === companyId) || null;
     
     setTimeout(() => {
@@ -80,7 +78,6 @@ const CompanyOverview = ({ companyId }: CompanyOverviewProps) => {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Company Profile Card */}
         <Card className="md:col-span-2">
           <CardHeader>
             <CardTitle className="text-lg">Company Profile</CardTitle>
@@ -148,7 +145,6 @@ const CompanyOverview = ({ companyId }: CompanyOverviewProps) => {
           </CardContent>
         </Card>
         
-        {/* Key Financials Card */}
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Key Financials</CardTitle>
@@ -201,62 +197,58 @@ const CompanyOverview = ({ companyId }: CompanyOverviewProps) => {
         </Card>
       </div>
       
-      {/* Stock Chart */}
       {company.stockChartData && company.stockChartData.length > 0 && (
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Stock Performance</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-[300px] w-full">
-              <ChartContainer config={chartConfig}>
-                <ResponsiveContainer width="99%" height="100%">
-                  <AreaChart 
-                    data={company.stockChartData} 
-                    margin={{ top: 10, right: 10, left: 0, bottom: 5 }}
-                  >
-                    <defs>
-                      <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
-                      </linearGradient>
-                    </defs>
-                    <XAxis 
-                      dataKey="date" 
-                      tickLine={false}
-                      axisLine={false}
-                      tick={{ fontSize: 10 }}
-                      tickFormatter={(value) => value}
-                      interval="preserveStartEnd"
-                      minTickGap={30}
-                    />
-                    <YAxis 
-                      tickLine={false}
-                      axisLine={false}
-                      tick={{ fontSize: 10 }}
-                      domain={['auto', 'auto']}
-                      tickFormatter={(value) => `$${value}`}
-                      width={35}
-                    />
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                    <Area 
-                      type="monotone" 
-                      dataKey="price" 
-                      stroke="#10b981" 
-                      fillOpacity={1} 
-                      fill="url(#colorPrice)" 
-                      strokeWidth={2}
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
+            <div style={{ position: 'relative', width: '100%', height: '300px' }}>
+              <ChartContainer config={chartConfig} className="w-full">
+                <AreaChart 
+                  data={company.stockChartData} 
+                  margin={{ top: 10, right: 20, left: 10, bottom: 10 }}
+                >
+                  <defs>
+                    <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <XAxis 
+                    dataKey="date" 
+                    tickLine={false}
+                    axisLine={false}
+                    tick={{ fontSize: 10 }}
+                    tickFormatter={(value) => value}
+                    interval="preserveStartEnd"
+                    minTickGap={30}
+                  />
+                  <YAxis 
+                    tickLine={false}
+                    axisLine={false}
+                    tick={{ fontSize: 10 }}
+                    domain={['auto', 'auto']}
+                    tickFormatter={(value) => `$${value}`}
+                    width={40}
+                  />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Area 
+                    type="monotone" 
+                    dataKey="price" 
+                    stroke="#10b981" 
+                    fillOpacity={1} 
+                    fill="url(#colorPrice)" 
+                    strokeWidth={2}
+                  />
+                </AreaChart>
               </ChartContainer>
             </div>
           </CardContent>
         </Card>
       )}
       
-      {/* Key Metrics Cards */}
       {company.keyMetrics && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {company.keyMetrics.map((metric, index) => (
@@ -264,7 +256,7 @@ const CompanyOverview = ({ companyId }: CompanyOverviewProps) => {
               <CardContent className="pt-6">
                 <p className="text-sm text-muted-foreground">{metric.title}</p>
                 <div className="mt-1 flex items-center justify-between">
-                  <p className="text-xl font-bold text-wrap-anywhere overflow-hidden">{metric.value}</p>
+                  <p className="text-price text-wrap-anywhere overflow-hidden">{metric.value}</p>
                   {metric.change !== undefined && (
                     <div className={`text-xs ${metric.change >= 0 ? "text-positive" : "text-negative"}`}>
                       {metric.change >= 0 ? "+" : ""}{metric.change}

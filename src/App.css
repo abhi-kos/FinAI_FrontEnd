@@ -62,4 +62,16 @@
 /* Chart container fixes */
 .recharts-wrapper {
   max-width: 100%;
+  overflow: visible;
 }
+
+.recharts-surface {
+  overflow: visible;
+}
+
+/* Fix for chart alignments */
+[data-chart] {
+  width: 100%;
+  min-width: 0;
+}
+
