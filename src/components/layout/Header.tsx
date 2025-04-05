@@ -1,6 +1,7 @@
 
 import { Search, Bell, User } from "lucide-react";
 import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -9,41 +10,55 @@ import { useToast } from "@/hooks/use-toast";
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const { toast } = useToast();
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  // Only show search box when not on the home/console page
+  const isConsole = location.pathname === "/";
   
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // In a real app, this would trigger the search functionality
+      // Navigate to home page with the search query
+      navigate("/", { 
+        state: { searchQuery: searchQuery }
+      });
+      
       toast({
         title: "Search initiated",
         description: `Searching for: ${searchQuery}`,
       });
+      
+      // Reset the search field after submitting
+      setSearchQuery("");
     }
   };
   
   return (
     <div className="h-16 border-b border-border bg-card flex items-center justify-between px-4">
       <div className="flex-1 max-w-2xl">
-        <form onSubmit={handleSearch} className="relative">
-          <Input
-            type="text"
-            placeholder="Search companies, news, or ask a question..."
-            className="pl-10 pr-4 h-10"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
-          {searchQuery && (
-            <Button 
-              type="submit" 
-              variant="ghost" 
-              size="sm" 
-              className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 px-2"
-            >
-              Search
-            </Button>
-          )}
-        </form>
+        {!isConsole && (
+          <form onSubmit={handleSearch} className="relative">
+            <Input
+              type="text"
+              placeholder="Search companies, news, or ask a question..."
+              className="pl-10 pr-4 h-10"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
+            {searchQuery && (
+              <Button 
+                type="submit" 
+                variant="ghost" 
+                size="sm" 
+                className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 px-2"
+              >
+                Search
+              </Button>
+            )}
+          </form>
+        )}
       </div>
       
       <div className="flex items-center gap-2">
