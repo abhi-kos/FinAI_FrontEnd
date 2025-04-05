@@ -1,6 +1,6 @@
 
 import React from "react";
-import { X, FileText, BarChart, Newspaper, FileArchive, ExternalLink, Database } from "lucide-react";
+import { X, FileText, BarChart, Newspaper, FileArchive, ExternalLink, Database, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 
