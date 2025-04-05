@@ -144,14 +144,19 @@ const CompanyCompetitors = ({ companyId }: CompanyCompetitorsProps) => {
         </CardHeader>
         <CardContent>
           <div className="h-80">
+            {/* Separate ChartContainer for the chart and legend to fix TypeScript errors */}
             <ChartContainer config={chartConfig}>
+              {/* ResponsiveContainer needs a single child element, not multiple */}
               <ResponsiveContainer width="100%" height="100%">
                 {renderPerformanceChart()}
               </ResponsiveContainer>
+            </ChartContainer>
+            {/* Render legend separately */}
+            <div className="mt-4">
               <ChartLegend>
                 <ChartLegendContent />
               </ChartLegend>
-            </ChartContainer>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -163,14 +168,19 @@ const CompanyCompetitors = ({ companyId }: CompanyCompetitorsProps) => {
         </CardHeader>
         <CardContent>
           <div className="h-80">
+            {/* Separate ChartContainer for the chart and legend to fix TypeScript errors */}
             <ChartContainer config={chartConfig}>
+              {/* ResponsiveContainer needs a single child element, not multiple */}
               <ResponsiveContainer width="100%" height="100%">
                 {renderRevenueGrowthChart()}
               </ResponsiveContainer>
+            </ChartContainer>
+            {/* Render legend separately */}
+            <div className="mt-4">
               <ChartLegend>
                 <ChartLegendContent />
               </ChartLegend>
-            </ChartContainer>
+            </div>
           </div>
         </CardContent>
       </Card>
