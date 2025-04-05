@@ -10,6 +10,7 @@ import {
   CardHeader, 
   CardTitle 
 } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
@@ -93,6 +94,7 @@ const FavoriteCard = ({ item, onRemove }: FavoriteCardProps) => {
           </Button>
         </div>
       </CardHeader>
+      
       <CardContent>
         <div className="flex justify-between items-center">
           <div className="text-xl font-semibold">
@@ -119,22 +121,52 @@ const FavoriteCard = ({ item, onRemove }: FavoriteCardProps) => {
           </div>
         </div>
         
-        {expanded && item.recentNews && (
+        {expanded && (
           <div className="mt-4 border-t border-border pt-3">
-            <div className="text-sm font-medium mb-2">Recent News</div>
-            <ul className="space-y-2">
-              {item.recentNews.map((news, i) => (
-                <li key={i} className="text-sm hover:underline">
-                  <a href={news.url} target="_blank" rel="noopener noreferrer" className="flex items-start">
-                    <ExternalLink className="h-3.5 w-3.5 mt-1 mr-1.5 flex-shrink-0" />
-                    <span>{news.title}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <Tabs defaultValue="news" className="w-full">
+              <TabsList className="grid w-full grid-cols-2 mb-2">
+                <TabsTrigger value="news">News</TabsTrigger>
+                <TabsTrigger value="info">Info</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="news" className="space-y-2">
+                {item.recentNews && item.recentNews.length > 0 ? (
+                  <ul className="space-y-2">
+                    {item.recentNews.map((news, i) => (
+                      <li key={i} className="text-sm hover:underline">
+                        <a href={news.url} target="_blank" rel="noopener noreferrer" className="flex items-start">
+                          <ExternalLink className="h-3.5 w-3.5 mt-1 mr-1.5 flex-shrink-0" />
+                          <span>{news.title}</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-sm text-muted-foreground">No recent news available.</p>
+                )}
+              </TabsContent>
+              
+              <TabsContent value="info">
+                <div className="space-y-2">
+                  <div className="grid grid-cols-2 gap-1 text-sm">
+                    <div className="text-muted-foreground">Currency:</div>
+                    <div>{item.currency}</div>
+                    <div className="text-muted-foreground">Market:</div>
+                    <div>{item.market}</div>
+                    {item.sector && (
+                      <>
+                        <div className="text-muted-foreground">Sector:</div>
+                        <div>{item.sector}</div>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </TabsContent>
+            </Tabs>
           </div>
         )}
       </CardContent>
+      
       <CardFooter className="flex justify-between pt-0">
         <Button 
           variant="ghost" 

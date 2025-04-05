@@ -246,19 +246,19 @@ const FavoritesView = () => {
   
   return (
     <div className="h-full flex flex-col">
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <h1 className="text-2xl font-bold">Favorites</h1>
-        <div className="flex items-center space-x-2">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
           <Input
             placeholder="Filter favorites..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-60"
+            className="w-full sm:w-60"
           />
           
           <Dialog open={searchDialogOpen} onOpenChange={setSearchDialogOpen}>
             <DialogTrigger asChild>
-              <Button>
+              <Button className="whitespace-nowrap">
                 <Plus size={16} className="mr-2" />
                 Add Favorite
               </Button>
@@ -321,21 +321,23 @@ const FavoritesView = () => {
         </div>
       </div>
       
-      {/* Sector filters */}
-      <div className="mb-6 overflow-x-auto pb-2">
-        <div className="flex space-x-2">
-          {sectors.map(sector => (
-            <Button
-              key={sector}
-              variant={selectedSector === sector || (!selectedSector && sector === 'All') ? "default" : "outline"}
-              onClick={() => setSelectedSector(sector === 'All' ? null : sector)}
-              size="sm"
-              className="whitespace-nowrap"
-            >
-              {sector}
-            </Button>
-          ))}
-        </div>
+      {/* Sector filters - now with responsive scrolling */}
+      <div className="mb-6">
+        <ScrollArea className="pb-2" orientation="horizontal">
+          <div className="flex space-x-2 min-w-max p-1">
+            {sectors.map(sector => (
+              <Button
+                key={sector}
+                variant={selectedSector === sector || (!selectedSector && sector === 'All') ? "default" : "outline"}
+                onClick={() => setSelectedSector(sector === 'All' ? null : sector)}
+                size="sm"
+                className="whitespace-nowrap"
+              >
+                {sector}
+              </Button>
+            ))}
+          </div>
+        </ScrollArea>
       </div>
       
       {searchTerm && (
@@ -356,7 +358,7 @@ const FavoritesView = () => {
       )}
       
       {filteredFavorites.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-4 overflow-y-auto">
           {filteredFavorites.map(item => (
             <FavoriteCard
               key={item.id}
