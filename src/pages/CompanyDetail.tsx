@@ -1,0 +1,60 @@
+
+import { useState } from "react";
+import { useParams } from "react-router-dom";
+import MainLayout from "@/components/layout/MainLayout";
+import { 
+  Tabs, 
+  TabsContent, 
+  TabsList, 
+  TabsTrigger 
+} from "@/components/ui/tabs";
+import CompanyOverview from "@/components/company/CompanyOverview";
+import CompanyCompetitors from "@/components/company/CompanyCompetitors";
+import CompanyNews from "@/components/company/CompanyNews";
+import CompanySentiment from "@/components/company/CompanySentiment";
+
+const CompanyDetail = () => {
+  const { id } = useParams<{ id: string }>();
+  const [activeTab, setActiveTab] = useState("overview");
+  
+  return (
+    <MainLayout>
+      <div className="h-full">
+        <Tabs 
+          defaultValue="overview" 
+          value={activeTab} 
+          onValueChange={setActiveTab}
+          className="w-full"
+        >
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-2xl font-bold">Company Analysis</h1>
+            <TabsList>
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="competitors">Competitors</TabsTrigger>
+              <TabsTrigger value="news">News</TabsTrigger>
+              <TabsTrigger value="sentiment">Sentiment</TabsTrigger>
+            </TabsList>
+          </div>
+          
+          <TabsContent value="overview" className="mt-0">
+            <CompanyOverview companyId={id || ""} />
+          </TabsContent>
+          
+          <TabsContent value="competitors" className="mt-0">
+            <CompanyCompetitors companyId={id || ""} />
+          </TabsContent>
+          
+          <TabsContent value="news" className="mt-0">
+            <CompanyNews companyId={id || ""} />
+          </TabsContent>
+          
+          <TabsContent value="sentiment" className="mt-0">
+            <CompanySentiment companyId={id || ""} />
+          </TabsContent>
+        </Tabs>
+      </div>
+    </MainLayout>
+  );
+};
+
+export default CompanyDetail;

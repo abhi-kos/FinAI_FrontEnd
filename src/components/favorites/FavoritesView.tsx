@@ -7,7 +7,7 @@ import FavoriteCard, { FavoriteItem } from "./FavoriteCard";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-// Mock data for favorites
+// Mock data for favorites with sectors
 const mockFavorites: FavoriteItem[] = [
   {
     id: "1",
@@ -18,6 +18,8 @@ const mockFavorites: FavoriteItem[] = [
     changePercent: 1.92,
     currency: "INR",
     market: "NSE",
+    sector: "Technology",
+    sentiment: "positive",
     recentNews: [
       {
         title: "TCS Wins Major Cloud Contract with European Bank",
@@ -38,6 +40,8 @@ const mockFavorites: FavoriteItem[] = [
     changePercent: 0.94,
     currency: "INR",
     market: "NSE",
+    sector: "Finance",
+    sentiment: "neutral",
     recentNews: [
       {
         title: "HDFC Bank Expands Rural Banking Initiative",
@@ -54,6 +58,8 @@ const mockFavorites: FavoriteItem[] = [
     changePercent: -1.73,
     currency: "INR",
     market: "NSE",
+    sector: "Energy",
+    sentiment: "negative",
     recentNews: [
       {
         title: "Reliance Industries Reports Lower Refining Margins",
@@ -70,6 +76,8 @@ const mockFavorites: FavoriteItem[] = [
     changePercent: -1.47,
     currency: "SAR",
     market: "Tadawul",
+    sector: "Energy",
+    sentiment: "neutral",
     recentNews: [
       {
         title: "Saudi Aramco Plans $10B Investment in Petrochemicals",
@@ -86,46 +94,98 @@ const mockFavorites: FavoriteItem[] = [
     changePercent: 2.01,
     currency: "AED",
     market: "DFM",
+    sector: "Finance",
+    sentiment: "positive",
     recentNews: [
       {
         title: "Emirates NBD Q2 Profit Surges on Loan Growth",
         url: "https://example.com/news/8"
       }
     ]
+  },
+  {
+    id: "6",
+    name: "Microsoft",
+    ticker: "MSFT",
+    price: 378.92,
+    change: 5.67,
+    changePercent: 1.52,
+    currency: "USD",
+    market: "NASDAQ",
+    sector: "Technology",
+    sentiment: "positive"
+  },
+  {
+    id: "7",
+    name: "Apple",
+    ticker: "AAPL",
+    price: 175.85,
+    change: -2.15,
+    changePercent: -1.21,
+    currency: "USD",
+    market: "NASDAQ",
+    sector: "Technology",
+    sentiment: "neutral"
+  },
+  {
+    id: "8",
+    name: "Johnson & Johnson",
+    ticker: "JNJ",
+    price: 152.30,
+    change: 0.78,
+    changePercent: 0.51,
+    currency: "USD",
+    market: "NYSE",
+    sector: "Healthcare",
+    sentiment: "positive"
   }
 ];
 
 // Mock data for search results
 const mockSearchResults: FavoriteItem[] = [
   {
-    id: "6",
+    id: "9",
     name: "Infosys Ltd",
     ticker: "INFY.NS",
     price: 1520.45,
     change: 25.60,
     changePercent: 1.71,
     currency: "INR",
-    market: "NSE"
+    market: "NSE",
+    sector: "Technology"
   },
   {
-    id: "7",
+    id: "10",
     name: "First Abu Dhabi Bank",
     ticker: "FAB.AD",
     price: 14.20,
     change: 0.15,
     changePercent: 1.07,
     currency: "AED",
-    market: "ADX"
+    market: "ADX",
+    sector: "Finance"
   },
   {
-    id: "8",
+    id: "11",
     name: "Qatar National Bank",
     ticker: "QNBK.QA",
     price: 19.80,
     change: -0.25,
     changePercent: -1.25,
     currency: "QAR",
-    market: "QSE"
+    market: "QSE",
+    sector: "Finance"
+  },
+  {
+    id: "12",
+    name: "Pfizer Inc",
+    ticker: "PFE",
+    price: 28.45,
+    change: 0.32,
+    changePercent: 1.14,
+    currency: "USD",
+    market: "NYSE",
+    sector: "Healthcare"
   }
 ];
 
@@ -134,6 +194,7 @@ const FavoritesView = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<FavoriteItem[]>([]);
   const [searchDialogOpen, setSearchDialogOpen] = useState(false);
+  const [selectedSector, setSelectedSector] = useState<string | null>(null);
   
   const handleSearch = (term: string) => {
     setSearchTerm(term);
@@ -167,12 +228,21 @@ const FavoritesView = () => {
     setSearchResults([]);
   };
   
-  const filteredFavorites = searchTerm.trim() === "" 
-    ? favorites
-    : favorites.filter(
-        item => item.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-               item.ticker.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+  // Get unique sectors from favorites
+  const sectors = ['All', ...Array.from(new Set(favorites.map(item => item.sector || 'Uncategorized')))];
+  
+  // Filter favorites based on search term and selected sector
+  const filteredFavorites = favorites.filter(item => {
+    const matchesSearch = searchTerm.trim() === "" || 
+      item.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      item.ticker.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesSector = !selectedSector || selectedSector === 'All' || 
+      item.sector === selectedSector || 
+      (!item.sector && selectedSector === 'Uncategorized');
+    
+    return matchesSearch && matchesSector;
+  });
   
   return (
     <div className="h-full flex flex-col">
@@ -216,7 +286,12 @@ const FavoritesView = () => {
                         >
                           <div>
                             <div className="font-medium">{item.name}</div>
-                            <div className="text-sm text-muted-foreground">{item.ticker} • {item.market}</div>
+                            <div className="text-sm text-muted-foreground">
+                              {item.ticker} • {item.market}
+                              {item.sector && (
+                                <span> • {item.sector}</span>
+                              )}
+                            </div>
                           </div>
                           <Button 
                             variant="outline" 
@@ -243,6 +318,23 @@ const FavoritesView = () => {
               </div>
             </DialogContent>
           </Dialog>
+        </div>
+      </div>
+      
+      {/* Sector filters */}
+      <div className="mb-6 overflow-x-auto pb-2">
+        <div className="flex space-x-2">
+          {sectors.map(sector => (
+            <Button
+              key={sector}
+              variant={selectedSector === sector || (!selectedSector && sector === 'All') ? "default" : "outline"}
+              onClick={() => setSelectedSector(sector === 'All' ? null : sector)}
+              size="sm"
+              className="whitespace-nowrap"
+            >
+              {sector}
+            </Button>
+          ))}
         </div>
       </div>
       
@@ -277,16 +369,16 @@ const FavoritesView = () => {
         <div className="flex flex-col items-center justify-center h-64 text-center">
           <div className="text-4xl mb-4">⭐</div>
           <h3 className="text-lg font-medium mb-2">
-            {searchTerm ? "No favorites match your search" : "No favorites yet"}
+            {searchTerm || selectedSector ? "No favorites match your filters" : "No favorites yet"}
           </h3>
           <p className="text-muted-foreground mb-4">
-            {searchTerm 
-              ? "Try a different search term" 
+            {searchTerm || selectedSector
+              ? "Try different filters" 
               : "Start by adding companies or indices to your watchlist"}
           </p>
-          {searchTerm ? (
-            <Button variant="outline" onClick={() => setSearchTerm("")}>
-              Clear search
+          {(searchTerm || selectedSector) ? (
+            <Button variant="outline" onClick={() => {setSearchTerm(""); setSelectedSector(null);}}>
+              Clear filters
             </Button>
           ) : (
             <Button onClick={() => setSearchDialogOpen(true)}>

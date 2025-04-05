@@ -13,6 +13,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
+import { Badge } from "@/components/ui/badge";
 
 export interface FavoriteItem {
   id: string;
@@ -23,6 +24,8 @@ export interface FavoriteItem {
   changePercent: number;
   currency: string;
   market: string;
+  sector?: string;
+  sentiment?: "positive" | "neutral" | "negative";
   recentNews?: {
     title: string;
     url: string;
@@ -54,6 +57,18 @@ const FavoriteCard = ({ item, onRemove }: FavoriteCardProps) => {
     });
     return formatter.format(price);
   };
+
+  const getSentimentColor = (sentiment: string | undefined) => {
+    switch (sentiment) {
+      case "positive":
+        return "bg-emerald-100 text-emerald-800 hover:bg-emerald-100";
+      case "negative":
+        return "bg-rose-100 text-rose-800 hover:bg-rose-100";
+      case "neutral":
+      default:
+        return "bg-amber-100 text-amber-800 hover:bg-amber-100";
+    }
+  };
   
   return (
     <Card className={cn(
@@ -63,7 +78,14 @@ const FavoriteCard = ({ item, onRemove }: FavoriteCardProps) => {
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
           <div>
-            <CardTitle className="text-base">{item.name}</CardTitle>
+            <div className="flex items-center gap-2">
+              <CardTitle className="text-base">{item.name}</CardTitle>
+              {item.sector && (
+                <Badge variant="outline" className="text-xs">
+                  {item.sector}
+                </Badge>
+              )}
+            </div>
             <CardDescription>{item.ticker} • {item.market}</CardDescription>
           </div>
           <Button variant="ghost" size="icon" onClick={handleRemove}>
@@ -76,16 +98,24 @@ const FavoriteCard = ({ item, onRemove }: FavoriteCardProps) => {
           <div className="text-xl font-semibold">
             {formatPrice(item.price, item.currency)}
           </div>
-          <div className={cn(
-            "flex items-center text-sm font-medium",
-            item.change >= 0 ? "text-positive" : "text-negative"
-          )}>
-            {item.change >= 0 ? (
-              <TrendingUp className="mr-1 h-4 w-4" />
-            ) : (
-              <TrendingDown className="mr-1 h-4 w-4" />
+          <div className="flex items-center gap-2">
+            <div className={cn(
+              "flex items-center text-sm font-medium",
+              item.change >= 0 ? "text-positive" : "text-negative"
+            )}>
+              {item.change >= 0 ? (
+                <TrendingUp className="mr-1 h-4 w-4" />
+              ) : (
+                <TrendingDown className="mr-1 h-4 w-4" />
+              )}
+              {item.change >= 0 ? "+" : ""}{item.change.toFixed(2)} ({item.changePercent.toFixed(2)}%)
+            </div>
+            
+            {item.sentiment && (
+              <Badge variant="secondary" className={getSentimentColor(item.sentiment)}>
+                {item.sentiment.charAt(0).toUpperCase() + item.sentiment.slice(1)}
+              </Badge>
             )}
-            {item.change >= 0 ? "+" : ""}{item.change.toFixed(2)} ({item.changePercent.toFixed(2)}%)
           </div>
         </div>
         
@@ -126,15 +156,10 @@ const FavoriteCard = ({ item, onRemove }: FavoriteCardProps) => {
         </Button>
         
         <div className="flex gap-2">
-          <Link to="/news">
-            <Button variant="outline" size="sm" className="text-xs h-7">
-              News
-            </Button>
-          </Link>
-          <Link to="/">
+          <Link to={`/company/${item.id}`}>
             <Button variant="outline" size="sm" className="text-xs h-7">
               <div className="flex items-center">
-                Ask AI
+                View Details
                 <ArrowRight className="h-3.5 w-3.5 ml-1" />
               </div>
             </Button>
