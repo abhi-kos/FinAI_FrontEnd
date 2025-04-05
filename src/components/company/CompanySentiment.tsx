@@ -101,7 +101,7 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
   };
   
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Sentiment Score Card */}
         <Card>
@@ -121,7 +121,7 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
           <CardHeader>
             <CardTitle className="text-lg">Sentiment Distribution</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-4">
             <div className="h-52">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -182,31 +182,29 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
         <CardHeader>
           <CardTitle className="text-lg">Sentiment Trend Over Time</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="h-80">
-            <ChartContainer config={sentimentHistoryConfig}>
+        <CardContent className="p-4">
+          <div className="h-60 sm:h-80 w-full">
+            <ChartContainer config={sentimentHistoryConfig} className="w-full h-full">
               <ResponsiveContainer width="100%" height="100%">
-                <>
-                  <AreaChart data={sentimentData.sentimentHistory}>
-                    <defs>
-                      <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0}/>
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <XAxis dataKey="date" />
-                    <YAxis domain={[0, 100]} />
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                    <Area 
-                      type="monotone" 
-                      dataKey="score" 
-                      stroke="#8B5CF6" 
-                      fillOpacity={1}
-                      fill="url(#colorScore)" 
-                    />
-                  </AreaChart>
-                </>
+                <AreaChart data={sentimentData.sentimentHistory}>
+                  <defs>
+                    <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <XAxis dataKey="date" />
+                  <YAxis domain={[0, 100]} />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Area 
+                    type="monotone" 
+                    dataKey="score" 
+                    stroke="#8B5CF6" 
+                    fillOpacity={1}
+                    fill="url(#colorScore)" 
+                  />
+                </AreaChart>
               </ResponsiveContainer>
             </ChartContainer>
           </div>
@@ -218,8 +216,8 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
         <CardHeader>
           <CardTitle className="text-lg">Sentiment by Source</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="h-80">
+        <CardContent className="p-4">
+          <div className="h-60 sm:h-80 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={sentimentData.sentimentBySource}

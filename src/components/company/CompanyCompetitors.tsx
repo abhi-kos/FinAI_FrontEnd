@@ -134,7 +134,7 @@ const CompanyCompetitors = ({ companyId }: CompanyCompetitorsProps) => {
   );
   
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-6">
       <h2 className="text-xl font-semibold mb-2">{companyName} Competitive Analysis</h2>
       
       {/* Stock Performance Comparison Chart */}
@@ -142,17 +142,16 @@ const CompanyCompetitors = ({ companyId }: CompanyCompetitorsProps) => {
         <CardHeader>
           <CardTitle className="text-lg">Stock Performance Comparison</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="h-80">
-            {/* Separate ChartContainer for the chart and legend to fix TypeScript errors */}
-            <ChartContainer config={chartConfig}>
-              {/* ResponsiveContainer needs a single child element, not multiple */}
+        <CardContent className="p-4">
+          <div className="h-60 sm:h-80 w-full">
+            {/* Fixed chart container with proper responsiveness */}
+            <ChartContainer config={chartConfig} className="w-full h-full">
               <ResponsiveContainer width="100%" height="100%">
                 {renderPerformanceChart()}
               </ResponsiveContainer>
             </ChartContainer>
-            {/* Render legend separately */}
-            <div className="mt-4">
+            {/* Legend separated with proper padding */}
+            <div className="mt-3">
               <ChartLegend>
                 <ChartLegendContent />
               </ChartLegend>
@@ -166,17 +165,16 @@ const CompanyCompetitors = ({ companyId }: CompanyCompetitorsProps) => {
         <CardHeader>
           <CardTitle className="text-lg">Revenue Growth Y/Y Comparison</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="h-80">
-            {/* Separate ChartContainer for the chart and legend to fix TypeScript errors */}
-            <ChartContainer config={chartConfig}>
-              {/* ResponsiveContainer needs a single child element, not multiple */}
+        <CardContent className="p-4">
+          <div className="h-60 sm:h-80 w-full">
+            {/* Fixed chart container with proper responsiveness */}
+            <ChartContainer config={chartConfig} className="w-full h-full">
               <ResponsiveContainer width="100%" height="100%">
                 {renderRevenueGrowthChart()}
               </ResponsiveContainer>
             </ChartContainer>
-            {/* Render legend separately */}
-            <div className="mt-4">
+            {/* Legend separated with proper padding */}
+            <div className="mt-3">
               <ChartLegend>
                 <ChartLegendContent />
               </ChartLegend>
@@ -190,7 +188,7 @@ const CompanyCompetitors = ({ companyId }: CompanyCompetitorsProps) => {
         <CardHeader>
           <CardTitle className="text-lg">Key Financial Metrics Comparison</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-4">
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>

@@ -12,6 +12,7 @@ import CompanyOverview from "@/components/company/CompanyOverview";
 import CompanyCompetitors from "@/components/company/CompanyCompetitors";
 import CompanyNews from "@/components/company/CompanyNews";
 import CompanySentiment from "@/components/company/CompanySentiment";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const CompanyDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -36,21 +37,25 @@ const CompanyDetail = () => {
             </TabsList>
           </div>
           
-          <TabsContent value="overview" className="mt-0">
-            <CompanyOverview companyId={id || ""} />
-          </TabsContent>
-          
-          <TabsContent value="competitors" className="mt-0">
-            <CompanyCompetitors companyId={id || ""} />
-          </TabsContent>
-          
-          <TabsContent value="news" className="mt-0">
-            <CompanyNews companyId={id || ""} />
-          </TabsContent>
-          
-          <TabsContent value="sentiment" className="mt-0">
-            <CompanySentiment companyId={id || ""} />
-          </TabsContent>
+          <ScrollArea className="h-[calc(100vh-12rem)]">
+            <div className="pr-4 pb-6">
+              <TabsContent value="overview" className="mt-0">
+                <CompanyOverview companyId={id || ""} />
+              </TabsContent>
+              
+              <TabsContent value="competitors" className="mt-0">
+                <CompanyCompetitors companyId={id || ""} />
+              </TabsContent>
+              
+              <TabsContent value="news" className="mt-0">
+                <CompanyNews companyId={id || ""} />
+              </TabsContent>
+              
+              <TabsContent value="sentiment" className="mt-0">
+                <CompanySentiment companyId={id || ""} />
+              </TabsContent>
+            </div>
+          </ScrollArea>
         </Tabs>
       </div>
     </MainLayout>
