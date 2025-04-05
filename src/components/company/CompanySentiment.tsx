@@ -100,6 +100,30 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
     }
   };
   
+  // Custom Label Component for the Pie Chart
+  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, name }: any) => {
+    // Only show labels for values that are significant enough (e.g., > 5%)
+    if (percent < 0.05) return null;
+    
+    const radius = outerRadius * 0.8;
+    const RADIAN = Math.PI / 180;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN) * 1.2;
+    const y = cy + radius * Math.sin(-midAngle * RADIAN) * 1.2;
+    
+    return (
+      <text 
+        x={x} 
+        y={y} 
+        fill="#333333" 
+        textAnchor={x > cx ? 'start' : 'end'} 
+        dominantBaseline="central"
+        className="text-xs"
+      >
+        {`${name} ${(percent * 100).toFixed(0)}%`}
+      </text>
+    );
+  };
+  
   return (
     <div className="space-y-6 pb-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -121,27 +145,28 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
           <CardHeader>
             <CardTitle className="text-lg">Sentiment Distribution</CardTitle>
           </CardHeader>
-          <CardContent className="p-4">
-            <div className="h-52">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={sentimentData.sentimentDistribution}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    outerRadius={80}
-                    fill="#8884d8"
-                    dataKey="value"
-                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                  >
-                    {sentimentData.sentimentDistribution.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip formatter={(value) => `${value}%`} />
-                </PieChart>
-              </ResponsiveContainer>
+          <CardContent>
+            <div className="h-[210px] w-full flex items-center justify-center">
+              <PieChart width={200} height={200}>
+                <Pie
+                  data={sentimentData.sentimentDistribution}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  label={renderCustomizedLabel}
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                >
+                  {sentimentData.sentimentDistribution.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip 
+                  formatter={(value) => `${(value as number * 100).toFixed(0)}%`} 
+                  contentStyle={{ backgroundColor: "white", borderRadius: "8px", border: "1px solid #e2e8f0" }}
+                />
+              </PieChart>
             </div>
           </CardContent>
         </Card>
@@ -185,27 +210,30 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
         <CardContent className="p-4">
           <div className="h-60 sm:h-80 w-full">
             <ChartContainer config={sentimentHistoryConfig} className="w-full h-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={sentimentData.sentimentHistory}>
-                  <defs>
-                    <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                  <XAxis dataKey="date" />
-                  <YAxis domain={[0, 100]} />
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                  <Area 
-                    type="monotone" 
-                    dataKey="score" 
-                    stroke="#8B5CF6" 
-                    fillOpacity={1}
-                    fill="url(#colorScore)" 
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
+              <AreaChart 
+                width={500} 
+                height={300}
+                data={sentimentData.sentimentHistory}
+                margin={{ top: 10, right: 30, left: 0, bottom: 30 }}
+              >
+                <defs>
+                  <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                <XAxis dataKey="date" />
+                <YAxis domain={[0, 100]} width={50} />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Area 
+                  type="monotone" 
+                  dataKey="score" 
+                  stroke="#8B5CF6" 
+                  fillOpacity={1}
+                  fill="url(#colorScore)" 
+                />
+              </AreaChart>
             </ChartContainer>
           </div>
         </CardContent>
@@ -218,21 +246,21 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
         </CardHeader>
         <CardContent className="p-4">
           <div className="h-60 sm:h-80 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={sentimentData.sentimentBySource}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="source" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="positive" stackId="a" fill="#10b981" />
-                <Bar dataKey="neutral" stackId="a" fill="#f59e0b" />
-                <Bar dataKey="negative" stackId="a" fill="#ef4444" />
-              </BarChart>
-            </ResponsiveContainer>
+            <BarChart
+              width={500}
+              height={300}
+              data={sentimentData.sentimentBySource}
+              margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="source" />
+              <YAxis width={50} />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="positive" stackId="a" fill="#10b981" />
+              <Bar dataKey="neutral" stackId="a" fill="#f59e0b" />
+              <Bar dataKey="negative" stackId="a" fill="#ef4444" />
+            </BarChart>
           </div>
         </CardContent>
       </Card>

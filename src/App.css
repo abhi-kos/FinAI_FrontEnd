@@ -100,3 +100,30 @@
 .recharts-tooltip-wrapper {
   z-index: 10;
 }
+
+/* Fix pie chart text visibility */
+.recharts-pie-label-text {
+  font-size: 12px;
+  fill: #333;
+}
+
+/* Enhance tooltip visibility */
+.recharts-default-tooltip {
+  background-color: white !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 6px !important;
+  padding: 8px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Ensure pie chart container doesn't overflow */
+.recharts-pie-label-line {
+  stroke: #ccc;
+  stroke-width: 1px;
+}
+
+/* Better rendering for bar chart */
+.recharts-bar-rectangle {
+  opacity: 0.9;
+}
+
