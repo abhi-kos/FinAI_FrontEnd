@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import MainLayout from "@/components/layout/MainLayout";
 import { 
   Tabs, 
@@ -13,10 +13,17 @@ import CompanyCompetitors from "@/components/company/CompanyCompetitors";
 import CompanyNews from "@/components/company/CompanyNews";
 import CompanySentiment from "@/components/company/CompanySentiment";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 
 const CompanyDetail = () => {
   const { id } = useParams<{ id: string }>();
   const [activeTab, setActiveTab] = useState("overview");
+  const navigate = useNavigate();
+  
+  const handleBack = () => {
+    navigate("/favorites");
+  };
   
   return (
     <MainLayout>
@@ -28,7 +35,18 @@ const CompanyDetail = () => {
           className="w-full"
         >
           <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold">Company Analysis</h1>
+            <div className="flex items-center gap-3">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={handleBack}
+                className="flex items-center"
+              >
+                <ArrowLeft className="h-4 w-4 mr-1" />
+                Back to Favorites
+              </Button>
+              <h1 className="text-2xl font-bold">Company Analysis</h1>
+            </div>
             <TabsList className="flex-shrink-0">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="competitors">Competitors</TabsTrigger>
