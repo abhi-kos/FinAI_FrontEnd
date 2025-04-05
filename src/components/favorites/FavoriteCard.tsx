@@ -97,18 +97,18 @@ const FavoriteCard = ({ item, onRemove }: FavoriteCardProps) => {
       
       <CardContent className="flex-1">
         <div className="flex justify-between items-center">
-          <div className="text-xl font-semibold break-words min-w-0 mr-2">
+          <div className="text-lg font-semibold break-words min-w-0 mr-2 text-price">
             {formatPrice(item.price, item.currency)}
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
             <div className={cn(
-              "flex items-center text-sm font-medium whitespace-nowrap",
+              "flex items-center text-xs font-medium whitespace-nowrap",
               item.change >= 0 ? "text-positive" : "text-negative"
             )}>
               {item.change >= 0 ? (
-                <TrendingUp className="mr-1 h-4 w-4" />
+                <TrendingUp className="mr-1 h-3 w-3" />
               ) : (
-                <TrendingDown className="mr-1 h-4 w-4" />
+                <TrendingDown className="mr-1 h-3 w-3" />
               )}
               {item.change >= 0 ? "+" : ""}{item.change.toFixed(2)} ({item.changePercent.toFixed(2)}%)
             </div>

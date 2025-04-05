@@ -45,6 +45,7 @@
 /* Added for better text rendering with monetary values */
 .text-price {
   font-variant-numeric: tabular-nums;
+  font-size: 0.95rem;
   word-break: break-word;
   max-width: 100%;
 }
@@ -52,5 +53,5 @@
 /* Improve text overflow handling */
 .text-wrap-anywhere {
   overflow-wrap: anywhere;
+  font-size: 0.95rem;
 }
-
