@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
@@ -8,7 +9,6 @@ import {
 import { 
   Area, 
   AreaChart, 
-  ResponsiveContainer, 
   XAxis, 
   YAxis,
   CartesianGrid
@@ -203,11 +203,12 @@ const CompanyOverview = ({ companyId }: CompanyOverviewProps) => {
             <CardTitle className="text-lg">Stock Performance</CardTitle>
           </CardHeader>
           <CardContent>
-            <div style={{ position: 'relative', width: '100%', height: '300px' }}>
-              <ChartContainer config={chartConfig} className="w-full">
+            <div className="chart-container">
+              <ChartContainer config={chartConfig}>
                 <AreaChart 
                   data={company.stockChartData} 
-                  margin={{ top: 10, right: 20, left: 10, bottom: 10 }}
+                  margin={{ top: 10, right: 30, left: 20, bottom: 30 }}
+                  style={{ width: '100%', height: '100%' }}
                 >
                   <defs>
                     <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
@@ -230,7 +231,7 @@ const CompanyOverview = ({ companyId }: CompanyOverviewProps) => {
                     tick={{ fontSize: 10 }}
                     domain={['auto', 'auto']}
                     tickFormatter={(value) => `$${value}`}
-                    width={40}
+                    width={50}
                   />
                   <CartesianGrid strokeDasharray="3 3" vertical={false} />
                   <ChartTooltip content={<ChartTooltipContent />} />

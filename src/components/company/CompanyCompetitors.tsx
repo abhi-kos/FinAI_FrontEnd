@@ -13,8 +13,7 @@ import {
   Line, 
   XAxis, 
   YAxis, 
-  CartesianGrid, 
-  ResponsiveContainer
+  CartesianGrid
 } from "recharts";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { mockCompetitorsData } from "./mockData";
@@ -89,12 +88,17 @@ const CompanyCompetitors = ({ companyId }: CompanyCompetitorsProps) => {
   const companyData = competitors.find(c => c.id === companyId);
   
   const renderPerformanceChart = () => (
-    <LineChart data={competitorsData.performanceChart}>
+    <LineChart 
+      data={competitorsData.performanceChart}
+      margin={{ top: 10, right: 30, left: 20, bottom: 30 }}
+      style={{ width: '100%', height: '100%' }}
+    >
       <CartesianGrid strokeDasharray="3 3" vertical={false} />
       <XAxis dataKey="date" />
       <YAxis 
         tickFormatter={(value) => `${value}%`}
         domain={['auto', 'auto']}
+        width={50}
       />
       <ChartTooltip content={<ChartTooltipContent />} />
       {competitors.map((comp) => (
@@ -112,12 +116,17 @@ const CompanyCompetitors = ({ companyId }: CompanyCompetitorsProps) => {
   );
 
   const renderRevenueGrowthChart = () => (
-    <LineChart data={competitorsData.revenueGrowthChart}>
+    <LineChart 
+      data={competitorsData.revenueGrowthChart}
+      margin={{ top: 10, right: 30, left: 20, bottom: 30 }}
+      style={{ width: '100%', height: '100%' }}
+    >
       <CartesianGrid strokeDasharray="3 3" vertical={false} />
       <XAxis dataKey="year" />
       <YAxis 
         tickFormatter={(value) => `${value}%`}
         domain={['auto', 'auto']}
+        width={50}
       />
       <ChartTooltip content={<ChartTooltipContent />} />
       {competitors.map((comp) => (
@@ -143,14 +152,10 @@ const CompanyCompetitors = ({ companyId }: CompanyCompetitorsProps) => {
           <CardTitle className="text-lg">Stock Performance Comparison</CardTitle>
         </CardHeader>
         <CardContent className="p-4">
-          <div className="h-60 sm:h-80 w-full">
-            {/* Fixed chart container with proper responsiveness */}
-            <ChartContainer config={chartConfig} className="w-full h-full">
-              <ResponsiveContainer width="100%" height="100%">
-                {renderPerformanceChart()}
-              </ResponsiveContainer>
+          <div className="chart-container">
+            <ChartContainer config={chartConfig}>
+              {renderPerformanceChart()}
             </ChartContainer>
-            {/* Legend separated with proper padding */}
             <div className="mt-3">
               <ChartLegend>
                 <ChartLegendContent />
@@ -166,14 +171,10 @@ const CompanyCompetitors = ({ companyId }: CompanyCompetitorsProps) => {
           <CardTitle className="text-lg">Revenue Growth Y/Y Comparison</CardTitle>
         </CardHeader>
         <CardContent className="p-4">
-          <div className="h-60 sm:h-80 w-full">
-            {/* Fixed chart container with proper responsiveness */}
-            <ChartContainer config={chartConfig} className="w-full h-full">
-              <ResponsiveContainer width="100%" height="100%">
-                {renderRevenueGrowthChart()}
-              </ResponsiveContainer>
+          <div className="chart-container">
+            <ChartContainer config={chartConfig}>
+              {renderRevenueGrowthChart()}
             </ChartContainer>
-            {/* Legend separated with proper padding */}
             <div className="mt-3">
               <ChartLegend>
                 <ChartLegendContent />

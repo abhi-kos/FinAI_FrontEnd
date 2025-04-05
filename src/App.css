@@ -59,19 +59,44 @@
   text-overflow: ellipsis;
 }
 
-/* Chart container fixes */
+/* Enhanced chart container fixes */
 .recharts-wrapper {
-  max-width: 100%;
-  overflow: visible;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  overflow: visible !important;
 }
 
 .recharts-surface {
-  overflow: visible;
+  overflow: visible !important;
 }
 
-/* Fix for chart alignments */
-[data-chart] {
+/* Comprehensive chart fix */
+.chart-container {
+  position: relative;
   width: 100%;
-  min-width: 0;
+  height: 300px;
+  overflow: hidden;
 }
 
+/* Fix for chart alignments with better specificity */
+[data-chart] {
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+}
+
+/* Fix for chart paddings and scaling */
+.recharts-wrapper .recharts-cartesian-grid {
+  width: 100% !important;
+}
+
+/* Fix axis alignment */
+.recharts-yAxis .recharts-cartesian-axis-line {
+  stroke-width: 1px;
+}
+
+/* Make sure that tooltip is visible */
+.recharts-tooltip-wrapper {
+  z-index: 10;
+}
