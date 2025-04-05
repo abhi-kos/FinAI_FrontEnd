@@ -101,29 +101,26 @@ const CompanyCompetitors = ({ companyId }: CompanyCompetitorsProps) => {
           <div className="h-80">
             <ChartContainer config={chartConfig}>
               <ResponsiveContainer width="100%" height="100%">
-                {/* Wrap multiple elements in a fragment */}
-                <>
-                  <LineChart data={competitorsData.performanceChart}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <XAxis dataKey="date" />
-                    <YAxis 
-                      tickFormatter={(value) => `${value}%`}
-                      domain={['auto', 'auto']}
+                <LineChart data={competitorsData.performanceChart}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <XAxis dataKey="date" />
+                  <YAxis 
+                    tickFormatter={(value) => `${value}%`}
+                    domain={['auto', 'auto']}
+                  />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  {competitors.map((comp) => (
+                    <Line
+                      key={comp.id}
+                      type="monotone"
+                      dataKey={comp.id}
+                      stroke={comp.color}
+                      strokeWidth={comp.id === companyId ? 3 : 1.5}
+                      dot={false}
+                      activeDot={{ r: 6, fill: comp.color }}
                     />
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                    {competitors.map((comp) => (
-                      <Line
-                        key={comp.id}
-                        type="monotone"
-                        dataKey={comp.id}
-                        stroke={comp.color}
-                        strokeWidth={comp.id === companyId ? 3 : 1.5}
-                        dot={false}
-                        activeDot={{ r: 6, fill: comp.color }}
-                      />
-                    ))}
-                  </LineChart>
-                </>
+                  ))}
+                </LineChart>
               </ResponsiveContainer>
               <ChartLegend>
                 <ChartLegendContent />
@@ -142,28 +139,25 @@ const CompanyCompetitors = ({ companyId }: CompanyCompetitorsProps) => {
           <div className="h-80">
             <ChartContainer config={chartConfig}>
               <ResponsiveContainer width="100%" height="100%">
-                {/* Wrap multiple elements in a fragment */}
-                <>
-                  <LineChart data={competitorsData.revenueGrowthChart}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <XAxis dataKey="year" />
-                    <YAxis 
-                      tickFormatter={(value) => `${value}%`}
-                      domain={['auto', 'auto']}
+                <LineChart data={competitorsData.revenueGrowthChart}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <XAxis dataKey="year" />
+                  <YAxis 
+                    tickFormatter={(value) => `${value}%`}
+                    domain={['auto', 'auto']}
+                  />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  {competitors.map((comp) => (
+                    <Line
+                      key={comp.id}
+                      type="monotone"
+                      dataKey={comp.id}
+                      stroke={comp.color}
+                      strokeWidth={comp.id === companyId ? 3 : 1.5}
+                      activeDot={{ r: 6, fill: comp.color }}
                     />
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                    {competitors.map((comp) => (
-                      <Line
-                        key={comp.id}
-                        type="monotone"
-                        dataKey={comp.id}
-                        stroke={comp.color}
-                        strokeWidth={comp.id === companyId ? 3 : 1.5}
-                        activeDot={{ r: 6, fill: comp.color }}
-                      />
-                    ))}
-                  </LineChart>
-                </>
+                  ))}
+                </LineChart>
               </ResponsiveContainer>
               <ChartLegend>
                 <ChartLegendContent />
