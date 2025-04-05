@@ -58,3 +58,8 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* Chart container fixes */
+.recharts-wrapper {
+  max-width: 100%;
+}

@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
   ChartContainer, 
@@ -208,12 +208,12 @@ const CompanyOverview = ({ companyId }: CompanyOverviewProps) => {
             <CardTitle className="text-lg">Stock Performance</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-80">
+            <div className="h-[300px] w-full">
               <ChartContainer config={chartConfig}>
-                <ResponsiveContainer width="100%" height="100%">
+                <ResponsiveContainer width="99%" height="100%">
                   <AreaChart 
                     data={company.stockChartData} 
-                    margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+                    margin={{ top: 10, right: 10, left: 0, bottom: 5 }}
                   >
                     <defs>
                       <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
@@ -225,15 +225,18 @@ const CompanyOverview = ({ companyId }: CompanyOverviewProps) => {
                       dataKey="date" 
                       tickLine={false}
                       axisLine={false}
-                      tick={{ fontSize: 12 }}
+                      tick={{ fontSize: 10 }}
                       tickFormatter={(value) => value}
+                      interval="preserveStartEnd"
+                      minTickGap={30}
                     />
                     <YAxis 
                       tickLine={false}
                       axisLine={false}
-                      tick={{ fontSize: 12 }}
+                      tick={{ fontSize: 10 }}
                       domain={['auto', 'auto']}
                       tickFormatter={(value) => `$${value}`}
+                      width={35}
                     />
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <ChartTooltip content={<ChartTooltipContent />} />
