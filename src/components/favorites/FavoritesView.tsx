@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Plus, Search, Star, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -245,95 +246,101 @@ const FavoritesView = () => {
   
   return (
     <div className="h-full flex flex-col">
-      <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <h1 className="text-2xl font-bold">Favorites</h1>
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
-          <Input
-            placeholder="Filter favorites..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full sm:w-60"
-          />
-          
-          <Dialog open={searchDialogOpen} onOpenChange={setSearchDialogOpen}>
-            <DialogTrigger asChild>
-              <Button className="whitespace-nowrap">
-                <Plus size={16} className="mr-2" />
-                Add Favorite
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Add to Favorites</DialogTitle>
-              </DialogHeader>
-              <div className="py-4">
-                <Input
-                  placeholder="Search companies or tickers..."
-                  value={searchTerm}
-                  onChange={(e) => handleSearch(e.target.value)}
-                  className="mb-4"
-                  autoFocus
-                />
-                
-                <ScrollArea className="h-[300px] pr-4">
-                  {searchResults.length > 0 ? (
-                    <div className="space-y-2">
-                      {searchResults.map(item => (
-                        <div 
-                          key={item.id} 
-                          className="flex items-center justify-between p-3 border border-border rounded-md hover:bg-muted"
-                        >
-                          <div>
-                            <div className="font-medium">{item.name}</div>
-                            <div className="text-sm text-muted-foreground">
-                              {item.ticker} • {item.market}
-                              {item.sector && (
-                                <span> • {item.sector}</span>
-                              )}
+      <div className="mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+          <h1 className="text-2xl font-bold">Favorites</h1>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+            <Input
+              placeholder="Filter favorites..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full sm:w-60"
+            />
+            
+            <Dialog open={searchDialogOpen} onOpenChange={setSearchDialogOpen}>
+              <DialogTrigger asChild>
+                <Button className="whitespace-nowrap">
+                  <Plus size={16} className="mr-2" />
+                  Add Favorite
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Add to Favorites</DialogTitle>
+                </DialogHeader>
+                <div className="py-4">
+                  <Input
+                    placeholder="Search companies or tickers..."
+                    value={searchTerm}
+                    onChange={(e) => handleSearch(e.target.value)}
+                    className="mb-4"
+                    autoFocus
+                  />
+                  
+                  <ScrollArea className="h-[300px]">
+                    <div className="pr-4">
+                      {searchResults.length > 0 ? (
+                        <div className="space-y-2">
+                          {searchResults.map(item => (
+                            <div 
+                              key={item.id} 
+                              className="flex items-center justify-between p-3 border border-border rounded-md hover:bg-muted"
+                            >
+                              <div className="flex-1 min-w-0 mr-2">
+                                <div className="font-medium truncate">{item.name}</div>
+                                <div className="text-sm text-muted-foreground truncate">
+                                  {item.ticker} • {item.market}
+                                  {item.sector && (
+                                    <span> • {item.sector}</span>
+                                  )}
+                                </div>
+                              </div>
+                              <Button 
+                                variant="outline" 
+                                size="sm" 
+                                onClick={() => handleAddFavorite(item)}
+                                className="h-8 flex-shrink-0"
+                              >
+                                <Star size={14} className="mr-1" />
+                                Add
+                              </Button>
                             </div>
-                          </div>
-                          <Button 
-                            variant="outline" 
-                            size="sm" 
-                            onClick={() => handleAddFavorite(item)}
-                            className="h-8"
-                          >
-                            <Star size={14} className="mr-1" />
-                            Add
-                          </Button>
+                          ))}
                         </div>
-                      ))}
+                      ) : searchTerm ? (
+                        <div className="text-center py-8 text-muted-foreground">
+                          No results found for "{searchTerm}"
+                        </div>
+                      ) : (
+                        <div className="text-center py-8 text-muted-foreground">
+                          Search for companies or tickers to add them to your favorites
+                        </div>
+                      )}
                     </div>
-                  ) : searchTerm ? (
-                    <div className="text-center py-8 text-muted-foreground">
-                      No results found for "{searchTerm}"
-                    </div>
-                  ) : (
-                    <div className="text-center py-8 text-muted-foreground">
-                      Search for companies or tickers to add them to your favorites
-                    </div>
-                  )}
-                </ScrollArea>
-              </div>
-            </DialogContent>
-          </Dialog>
+                  </ScrollArea>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
-      </div>
       
-      {/* Sector filters - with fixed horizontal scrolling issue */}
-      <div className="mb-6 overflow-x-auto">
-        <div className="flex space-x-2 min-w-max p-1">
-          {sectors.map(sector => (
-            <Button
-              key={sector}
-              variant={selectedSector === sector || (!selectedSector && sector === 'All') ? "default" : "outline"}
-              onClick={() => setSelectedSector(sector === 'All' ? null : sector)}
-              size="sm"
-              className="whitespace-nowrap"
-            >
-              {sector}
-            </Button>
-          ))}
+        {/* Sector filters - with proper scrolling */}
+        <div className="relative">
+          <ScrollArea orientation="horizontal" className="w-full pb-4">
+            <div className="flex space-x-2 p-1 min-w-max">
+              {sectors.map(sector => (
+                <Button
+                  key={sector}
+                  variant={selectedSector === sector || (!selectedSector && sector === 'All') ? "default" : "outline"}
+                  onClick={() => setSelectedSector(sector === 'All' ? null : sector)}
+                  size="sm"
+                  className="whitespace-nowrap"
+                >
+                  {sector}
+                </Button>
+              ))}
+            </div>
+          </ScrollArea>
         </div>
       </div>
       
@@ -354,39 +361,43 @@ const FavoritesView = () => {
         </div>
       )}
       
-      {filteredFavorites.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-4 overflow-y-auto">
-          {filteredFavorites.map(item => (
-            <FavoriteCard
-              key={item.id}
-              item={item}
-              onRemove={handleRemoveFavorite}
-            />
-          ))}
-        </div>
-      ) : (
-        <div className="flex flex-col items-center justify-center h-64 text-center">
-          <div className="text-4xl mb-4">⭐</div>
-          <h3 className="text-lg font-medium mb-2">
-            {searchTerm || selectedSector ? "No favorites match your filters" : "No favorites yet"}
-          </h3>
-          <p className="text-muted-foreground mb-4">
-            {searchTerm || selectedSector
-              ? "Try different filters" 
-              : "Start by adding companies or indices to your watchlist"}
-          </p>
-          {(searchTerm || selectedSector) ? (
-            <Button variant="outline" onClick={() => {setSearchTerm(""); setSelectedSector(null);}}>
-              Clear filters
-            </Button>
-          ) : (
-            <Button onClick={() => setSearchDialogOpen(true)}>
-              <Plus size={16} className="mr-2" />
-              Add your first favorite
-            </Button>
-          )}
-        </div>
-      )}
+      <div className="relative flex-1 overflow-hidden">
+        {filteredFavorites.length > 0 ? (
+          <ScrollArea className="h-full w-full pr-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-6">
+              {filteredFavorites.map(item => (
+                <FavoriteCard
+                  key={item.id}
+                  item={item}
+                  onRemove={handleRemoveFavorite}
+                />
+              ))}
+            </div>
+          </ScrollArea>
+        ) : (
+          <div className="flex flex-col items-center justify-center h-64 text-center">
+            <div className="text-4xl mb-4">⭐</div>
+            <h3 className="text-lg font-medium mb-2">
+              {searchTerm || selectedSector ? "No favorites match your filters" : "No favorites yet"}
+            </h3>
+            <p className="text-muted-foreground mb-4">
+              {searchTerm || selectedSector
+                ? "Try different filters" 
+                : "Start by adding companies or indices to your watchlist"}
+            </p>
+            {(searchTerm || selectedSector) ? (
+              <Button variant="outline" onClick={() => {setSearchTerm(""); setSelectedSector(null);}}>
+                Clear filters
+              </Button>
+            ) : (
+              <Button onClick={() => setSearchDialogOpen(true)}>
+                <Plus size={16} className="mr-2" />
+                Add your first favorite
+              </Button>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

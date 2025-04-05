@@ -73,36 +73,36 @@ const FavoriteCard = ({ item, onRemove }: FavoriteCardProps) => {
   
   return (
     <Card className={cn(
-      "transition-all duration-200",
+      "transition-all duration-200 h-full flex flex-col",
       expanded ? "shadow-md" : "hover:shadow-sm"
     )}>
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
-          <div>
-            <div className="flex items-center gap-2">
-              <CardTitle className="text-base">{item.name}</CardTitle>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <CardTitle className="text-base truncate">{item.name}</CardTitle>
               {item.sector && (
                 <Badge variant="outline" className="text-xs">
                   {item.sector}
                 </Badge>
               )}
             </div>
-            <CardDescription>{item.ticker} • {item.market}</CardDescription>
+            <CardDescription className="truncate">{item.ticker} • {item.market}</CardDescription>
           </div>
-          <Button variant="ghost" size="icon" onClick={handleRemove}>
+          <Button variant="ghost" size="icon" className="flex-shrink-0 ml-2" onClick={handleRemove}>
             <Star className="h-[1.2rem] w-[1.2rem] fill-primary" />
           </Button>
         </div>
       </CardHeader>
       
-      <CardContent>
+      <CardContent className="flex-1">
         <div className="flex justify-between items-center">
-          <div className="text-xl font-semibold">
+          <div className="text-xl font-semibold truncate">
             {formatPrice(item.price, item.currency)}
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-shrink-0">
             <div className={cn(
-              "flex items-center text-sm font-medium",
+              "flex items-center text-sm font-medium whitespace-nowrap",
               item.change >= 0 ? "text-positive" : "text-negative"
             )}>
               {item.change >= 0 ? (
@@ -129,14 +129,14 @@ const FavoriteCard = ({ item, onRemove }: FavoriteCardProps) => {
                 <TabsTrigger value="info">Info</TabsTrigger>
               </TabsList>
               
-              <TabsContent value="news" className="space-y-2">
+              <TabsContent value="news" className="space-y-2 max-h-[150px] overflow-y-auto pr-2">
                 {item.recentNews && item.recentNews.length > 0 ? (
                   <ul className="space-y-2">
                     {item.recentNews.map((news, i) => (
-                      <li key={i} className="text-sm hover:underline">
-                        <a href={news.url} target="_blank" rel="noopener noreferrer" className="flex items-start">
+                      <li key={i} className="text-sm">
+                        <a href={news.url} target="_blank" rel="noopener noreferrer" className="flex items-start hover:underline">
                           <ExternalLink className="h-3.5 w-3.5 mt-1 mr-1.5 flex-shrink-0" />
-                          <span>{news.title}</span>
+                          <span className="break-words">{news.title}</span>
                         </a>
                       </li>
                     ))}
@@ -150,13 +150,13 @@ const FavoriteCard = ({ item, onRemove }: FavoriteCardProps) => {
                 <div className="space-y-2">
                   <div className="grid grid-cols-2 gap-1 text-sm">
                     <div className="text-muted-foreground">Currency:</div>
-                    <div>{item.currency}</div>
+                    <div className="truncate">{item.currency}</div>
                     <div className="text-muted-foreground">Market:</div>
-                    <div>{item.market}</div>
+                    <div className="truncate">{item.market}</div>
                     {item.sector && (
                       <>
                         <div className="text-muted-foreground">Sector:</div>
-                        <div>{item.sector}</div>
+                        <div className="truncate">{item.sector}</div>
                       </>
                     )}
                   </div>
@@ -167,7 +167,7 @@ const FavoriteCard = ({ item, onRemove }: FavoriteCardProps) => {
         )}
       </CardContent>
       
-      <CardFooter className="flex justify-between pt-0">
+      <CardFooter className="flex justify-between pt-0 mt-auto">
         <Button 
           variant="ghost" 
           size="sm" 
