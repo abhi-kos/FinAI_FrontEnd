@@ -1,6 +1,5 @@
-
 import { useState, useRef, useEffect } from "react";
-import { Send, Mic, X, PaperclipIcon, ExternalLink, Filter, FileText, BarChart, Newspaper, FileArchive, Info, Database, ArrowDown, ArrowUp } from "lucide-react";
+import { Send, Mic, X, PaperclipIcon, ExternalLink, Filter, FileText, BarChart, Newspaper, FileArchive, Info, ArrowDown, ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ChatMessage from "./ChatMessage";
@@ -304,70 +303,6 @@ const ChatInterface = () => {
                 >
                   <PaperclipIcon size={18} />
                 </Button>
-                
-                {/* Source selector */}
-                <div className="relative">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="icon"
-                    onClick={() => setSourceDropdownOpen(!sourceDropdownOpen)}
-                    disabled={isLoading}
-                    className={cn(selectedSources.length > 0 && "border-primary text-primary")}
-                  >
-                    <Database size={18} />
-                  </Button>
-                  
-                  {sourceDropdownOpen && (
-                    <div className="absolute bottom-full mb-2 right-0 w-64 bg-card border border-border rounded-md shadow-md p-2 z-10">
-                      <div className="font-medium mb-1 px-2">Select Sources</div>
-                      
-                      <div className="space-y-1">
-                        {[
-                          { label: "Deep Web", icon: <ExternalLink size={14} /> },
-                          { label: "Internal", icon: <Database size={14} /> },
-                          { label: "External", icon: <ExternalLink size={14} /> },
-                          { label: "SEC Filings", icon: <FileArchive size={14} /> },
-                          { label: "Transcripts", icon: <FileText size={14} /> },
-                          { label: "Market Data", icon: <BarChart size={14} /> },
-                          { label: "News and Media", icon: <Newspaper size={14} /> },
-                        ].map(source => (
-                          <Button
-                            key={source.label}
-                            variant="ghost"
-                            size="sm"
-                            className={cn(
-                              "w-full justify-start", 
-                              selectedSources.includes(source.label as SourceType) && "bg-accent"
-                            )}
-                            onClick={() => toggleSourceOption(source.label as SourceType)}
-                          >
-                            <div className="flex items-center">
-                              <div className="mr-2">{source.icon}</div>
-                              <span>{source.label}</span>
-                            </div>
-                          </Button>
-                        ))}
-                      </div>
-                      
-                      <div className="flex justify-between mt-2 pt-2 border-t border-border">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => setSelectedSources([])}
-                        >
-                          Clear
-                        </Button>
-                        <Button
-                          size="sm"
-                          onClick={() => setSourceDropdownOpen(false)}
-                        >
-                          Apply
-                        </Button>
-                      </div>
-                    </div>
-                  )}
-                </div>
                 
                 {/* Send button */}
                 <Button type="submit" size="icon" disabled={!inputValue.trim() && attachments.length === 0 || isLoading}>
