@@ -5,7 +5,7 @@ import ChatInterface from "@/components/chat/ChatInterface";
 const Index = () => {
   return (
     <MainLayout>
-      <div className="h-full">
+      <div className="h-full flex flex-col">
         <ChatInterface />
       </div>
     </MainLayout>
