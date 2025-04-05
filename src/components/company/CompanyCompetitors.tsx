@@ -88,6 +88,51 @@ const CompanyCompetitors = ({ companyId }: CompanyCompetitorsProps) => {
   // Find the company's own data for comparison
   const companyData = competitors.find(c => c.id === companyId);
   
+  const renderPerformanceChart = () => (
+    <LineChart data={competitorsData.performanceChart}>
+      <CartesianGrid strokeDasharray="3 3" vertical={false} />
+      <XAxis dataKey="date" />
+      <YAxis 
+        tickFormatter={(value) => `${value}%`}
+        domain={['auto', 'auto']}
+      />
+      <ChartTooltip content={<ChartTooltipContent />} />
+      {competitors.map((comp) => (
+        <Line
+          key={comp.id}
+          type="monotone"
+          dataKey={comp.id}
+          stroke={comp.color}
+          strokeWidth={comp.id === companyId ? 3 : 1.5}
+          dot={false}
+          activeDot={{ r: 6, fill: comp.color }}
+        />
+      ))}
+    </LineChart>
+  );
+
+  const renderRevenueGrowthChart = () => (
+    <LineChart data={competitorsData.revenueGrowthChart}>
+      <CartesianGrid strokeDasharray="3 3" vertical={false} />
+      <XAxis dataKey="year" />
+      <YAxis 
+        tickFormatter={(value) => `${value}%`}
+        domain={['auto', 'auto']}
+      />
+      <ChartTooltip content={<ChartTooltipContent />} />
+      {competitors.map((comp) => (
+        <Line
+          key={comp.id}
+          type="monotone"
+          dataKey={comp.id}
+          stroke={comp.color}
+          strokeWidth={comp.id === companyId ? 3 : 1.5}
+          activeDot={{ r: 6, fill: comp.color }}
+        />
+      ))}
+    </LineChart>
+  );
+  
   return (
     <div className="space-y-6">
       <h2 className="text-xl font-semibold mb-2">{companyName} Competitive Analysis</h2>
@@ -101,26 +146,7 @@ const CompanyCompetitors = ({ companyId }: CompanyCompetitorsProps) => {
           <div className="h-80">
             <ChartContainer config={chartConfig}>
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={competitorsData.performanceChart}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                  <XAxis dataKey="date" />
-                  <YAxis 
-                    tickFormatter={(value) => `${value}%`}
-                    domain={['auto', 'auto']}
-                  />
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                  {competitors.map((comp) => (
-                    <Line
-                      key={comp.id}
-                      type="monotone"
-                      dataKey={comp.id}
-                      stroke={comp.color}
-                      strokeWidth={comp.id === companyId ? 3 : 1.5}
-                      dot={false}
-                      activeDot={{ r: 6, fill: comp.color }}
-                    />
-                  ))}
-                </LineChart>
+                {renderPerformanceChart()}
               </ResponsiveContainer>
               <ChartLegend>
                 <ChartLegendContent />
@@ -139,25 +165,7 @@ const CompanyCompetitors = ({ companyId }: CompanyCompetitorsProps) => {
           <div className="h-80">
             <ChartContainer config={chartConfig}>
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={competitorsData.revenueGrowthChart}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                  <XAxis dataKey="year" />
-                  <YAxis 
-                    tickFormatter={(value) => `${value}%`}
-                    domain={['auto', 'auto']}
-                  />
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                  {competitors.map((comp) => (
-                    <Line
-                      key={comp.id}
-                      type="monotone"
-                      dataKey={comp.id}
-                      stroke={comp.color}
-                      strokeWidth={comp.id === companyId ? 3 : 1.5}
-                      activeDot={{ r: 6, fill: comp.color }}
-                    />
-                  ))}
-                </LineChart>
+                {renderRevenueGrowthChart()}
               </ResponsiveContainer>
               <ChartLegend>
                 <ChartLegendContent />
