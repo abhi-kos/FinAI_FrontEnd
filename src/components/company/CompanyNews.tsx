@@ -16,7 +16,7 @@ interface NewsItem {
   date: string;
   excerpt: string;
   url: string;
-  sentiment: "positive" | "negative" | "neutral";
+  sentiment: "positive" | "neutral" | "negative";
   category: string;
   isEarningsRelated: boolean;
   isInsiderTrade: boolean;
@@ -28,7 +28,7 @@ const CompanyNews = ({ companyId }: CompanyNewsProps) => {
   
   useEffect(() => {
     // In a real app, this would be an API call
-    const newsForCompany = mockNewsData.filter(news => news.companyId === companyId);
+    const newsForCompany = mockNewsData.filter(news => news.companyId === companyId) as NewsItem[];
     
     setTimeout(() => {
       setNews(newsForCompany);

@@ -12,8 +12,7 @@ import {
   ResponsiveContainer, 
   XAxis, 
   YAxis,
-  CartesianGrid,
-  Tooltip
+  CartesianGrid
 } from "recharts";
 import { FavoriteItem } from "../favorites/FavoriteCard";
 import { mockCompanyData } from "./mockData";
@@ -22,38 +21,40 @@ interface CompanyOverviewProps {
   companyId: string;
 }
 
+type CompanyDetails = FavoriteItem & { 
+  description?: string;
+  marketCap?: number;
+  eps?: number;
+  revenue?: number;
+  netIncome?: number;
+  peRatio?: number;
+  dividendYield?: number;
+  yearFounded?: number;
+  employees?: number;
+  ceo?: string;
+  headquarters?: string;
+  stockChartData?: {
+    date: string;
+    price: number;
+    volume: number;
+  }[];
+  keyMetrics?: {
+    title: string;
+    value: string | number;
+    change?: number;
+    changePercentage?: number;
+  }[];
+};
+
 const CompanyOverview = ({ companyId }: CompanyOverviewProps) => {
-  const [company, setCompany] = useState<FavoriteItem & { 
-    description?: string;
-    marketCap?: number;
-    eps?: number;
-    revenue?: number;
-    netIncome?: number;
-    peRatio?: number;
-    dividendYield?: number;
-    yearFounded?: number;
-    employees?: number;
-    ceo?: string;
-    headquarters?: string;
-    stockChartData?: {
-      date: string;
-      price: number;
-      volume: number;
-    }[];
-    keyMetrics?: {
-      title: string;
-      value: string | number;
-      change?: number;
-      changePercentage?: number;
-    }[];
-  } | null>(null);
+  const [company, setCompany] = useState<CompanyDetails | null>(null);
 
   useEffect(() => {
     // In a real app, this would be an API call
     const companyData = mockCompanyData.find(c => c.id === companyId) || null;
     
     setTimeout(() => {
-      setCompany(companyData);
+      setCompany(companyData as CompanyDetails);
     }, 500);
   }, [companyId]);
 
@@ -210,38 +211,40 @@ const CompanyOverview = ({ companyId }: CompanyOverviewProps) => {
             <div className="h-80">
               <ChartContainer config={chartConfig}>
                 <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={company.stockChartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                    <defs>
-                      <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
-                      </linearGradient>
-                    </defs>
-                    <XAxis 
-                      dataKey="date" 
-                      tickLine={false}
-                      axisLine={false}
-                      tick={{ fontSize: 12 }}
-                      tickFormatter={(value) => value}
-                    />
-                    <YAxis 
-                      tickLine={false}
-                      axisLine={false}
-                      tick={{ fontSize: 12 }}
-                      domain={['auto', 'auto']}
-                      tickFormatter={(value) => `$${value}`}
-                    />
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                    <Area 
-                      type="monotone" 
-                      dataKey="price" 
-                      stroke="#10b981" 
-                      fillOpacity={1} 
-                      fill="url(#colorPrice)" 
-                      strokeWidth={2}
-                    />
-                  </AreaChart>
+                  <>
+                    <AreaChart data={company.stockChartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                      <defs>
+                        <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#10b981" stopOpacity={0.8}/>
+                          <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <XAxis 
+                        dataKey="date" 
+                        tickLine={false}
+                        axisLine={false}
+                        tick={{ fontSize: 12 }}
+                        tickFormatter={(value) => value}
+                      />
+                      <YAxis 
+                        tickLine={false}
+                        axisLine={false}
+                        tick={{ fontSize: 12 }}
+                        domain={['auto', 'auto']}
+                        tickFormatter={(value) => `$${value}`}
+                      />
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                      <ChartTooltip content={<ChartTooltipContent />} />
+                      <Area 
+                        type="monotone" 
+                        dataKey="price" 
+                        stroke="#10b981" 
+                        fillOpacity={1} 
+                        fill="url(#colorPrice)" 
+                        strokeWidth={2}
+                      />
+                    </AreaChart>
+                  </>
                 </ResponsiveContainer>
               </ChartContainer>
             </div>

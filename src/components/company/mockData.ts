@@ -10,7 +10,7 @@ export const mockCompanyData = [
     currency: "INR",
     market: "NSE",
     sector: "Technology",
-    sentiment: "positive",
+    sentiment: "positive" as "positive" | "neutral" | "negative",
     description: "Tata Consultancy Services Limited is an Indian multinational information technology services and consulting company headquartered in Mumbai, Maharashtra, India. It is a part of the Tata Group and operates in 149 locations across 46 countries.",
     marketCap: 14082000000000, // 14.08 trillion INR
     eps: 120.34,
@@ -69,7 +69,7 @@ export const mockCompanyData = [
     currency: "INR",
     market: "NSE",
     sector: "Finance",
-    sentiment: "neutral",
+    sentiment: "neutral" as "positive" | "neutral" | "negative",
     description: "HDFC Bank Limited is an Indian banking and financial services company headquartered in Mumbai, Maharashtra. It is India's largest private sector bank by assets and the world's 10th largest bank by market capitalization as of April 2021.",
     marketCap: 9120000000000, // 9.12 trillion INR
     eps: 82.5,
@@ -283,7 +283,7 @@ export const mockNewsData = [
     date: "2025-03-29T09:30:00Z",
     excerpt: "Tata Consultancy Services has secured a multi-million dollar cloud transformation contract with one of Europe's largest banking institutions. The deal, spanning 5 years, will modernize the bank's core systems and enhance digital capabilities.",
     url: "https://example.com/news/tcs-cloud-deal",
-    sentiment: "positive",
+    sentiment: "positive" as "positive" | "neutral" | "negative",
     category: "Contracts & Deals",
     isEarningsRelated: false,
     isInsiderTrade: false
@@ -296,7 +296,7 @@ export const mockNewsData = [
     date: "2025-03-15T14:45:00Z",
     excerpt: "Tata Consultancy Services reported a 15% year-on-year increase in quarterly profit, exceeding market expectations. Revenue grew by 18.3%, driven by digital transformation projects and growth in North American markets.",
     url: "https://example.com/news/tcs-q3-results",
-    sentiment: "positive",
+    sentiment: "positive" as "positive" | "neutral" | "negative",
     category: "Earnings",
     isEarningsRelated: true,
     isInsiderTrade: false
@@ -309,7 +309,7 @@ export const mockNewsData = [
     date: "2025-03-10T11:20:00Z",
     excerpt: "TCS has announced a major executive reorganization following the departure of their Chief Technology Officer. The company has promoted several internal leaders to new positions as part of its succession strategy.",
     url: "https://example.com/news/tcs-executive-changes",
-    sentiment: "neutral",
+    sentiment: "neutral" as "positive" | "neutral" | "negative",
     category: "Management",
     isEarningsRelated: false,
     isInsiderTrade: false
@@ -322,7 +322,7 @@ export const mockNewsData = [
     date: "2025-02-28T08:15:00Z",
     excerpt: "TCS is facing heightened competition in the AI services segment as newer, specialized firms gain market share. Analysts express concerns about pricing pressure and the impact on margins in this high-growth area.",
     url: "https://example.com/news/tcs-ai-competition",
-    sentiment: "negative",
+    sentiment: "negative" as "positive" | "neutral" | "negative",
     category: "Market Analysis",
     isEarningsRelated: false,
     isInsiderTrade: false
@@ -335,7 +335,7 @@ export const mockNewsData = [
     date: "2025-02-20T13:45:00Z",
     excerpt: "The chairman of Tata Consultancy Services has sold shares worth approximately $4.2 million, according to regulatory filings. The transaction was reportedly part of a pre-planned portfolio rebalancing.",
     url: "https://example.com/news/tcs-chairman-share-sale",
-    sentiment: "neutral",
+    sentiment: "neutral" as "positive" | "neutral" | "negative",
     category: "Insider Trading",
     isEarningsRelated: false,
     isInsiderTrade: true
@@ -350,7 +350,7 @@ export const mockNewsData = [
     date: "2025-03-25T10:15:00Z",
     excerpt: "HDFC Bank announced a major rural expansion initiative, with plans to open 500 new branches in underserved areas over the next 18 months. The bank aims to increase financial inclusion and capture growth in rural markets.",
     url: "https://example.com/news/hdfc-rural-expansion",
-    sentiment: "positive",
+    sentiment: "positive" as "positive" | "neutral" | "negative",
     category: "Business Strategy",
     isEarningsRelated: false,
     isInsiderTrade: false
@@ -363,7 +363,7 @@ export const mockNewsData = [
     date: "2025-03-18T16:30:00Z",
     excerpt: "HDFC Bank customers reported widespread issues with the bank's mobile application, with many unable to access accounts or complete transactions. The bank acknowledged the technical difficulties and said its IT team is working on resolving the issues.",
     url: "https://example.com/news/hdfc-app-outage",
-    sentiment: "negative",
+    sentiment: "negative" as "positive" | "neutral" | "negative",
     category: "Technical Issues",
     isEarningsRelated: false,
     isInsiderTrade: false
@@ -376,7 +376,7 @@ export const mockNewsData = [
     date: "2025-03-12T09:45:00Z",
     excerpt: "HDFC Bank has unveiled an artificial intelligence-powered lending platform targeting small and medium enterprises. The new system promises faster loan approvals, with decisions in as little as 24 hours for qualified businesses.",
     url: "https://example.com/news/hdfc-ai-lending",
-    sentiment: "positive",
+    sentiment: "positive" as "positive" | "neutral" | "negative",
     category: "Product Launch",
     isEarningsRelated: false,
     isInsiderTrade: false
@@ -389,7 +389,7 @@ export const mockNewsData = [
     date: "2025-03-05T14:20:00Z",
     excerpt: "HDFC Bank reported its quarterly results with a modest increase in non-performing assets. While profits grew by 12.7%, the slight deterioration in asset quality raised concerns among some analysts about the broader economic outlook.",
     url: "https://example.com/news/hdfc-q4-results",
-    sentiment: "neutral",
+    sentiment: "neutral" as "positive" | "neutral" | "negative",
     category: "Earnings",
     isEarningsRelated: true,
     isInsiderTrade: false
@@ -402,7 +402,7 @@ export const mockNewsData = [
     date: "2025-02-25T11:10:00Z",
     excerpt: "HDFC Bank has received regulatory approval for its strategic partnership with a major international payment network. The collaboration is expected to enhance the bank's credit card offerings with new rewards programs and security features.",
     url: "https://example.com/news/hdfc-card-partnership",
-    sentiment: "positive",
+    sentiment: "positive" as "positive" | "neutral" | "negative",
     category: "Partnerships",
     isEarningsRelated: false,
     isInsiderTrade: false
@@ -413,7 +413,7 @@ export const mockSentimentData = [
   {
     companyId: "1", // TCS
     companyName: "Tata Consultancy Services",
-    currentSentiment: "positive",
+    currentSentiment: "positive" as "positive" | "neutral" | "negative",
     sentimentScore: 76,
     sentimentHistory: [
       { date: "Jan", score: 68, volume: 2450 },
@@ -437,18 +437,18 @@ export const mockSentimentData = [
       { source: "Analyst Reports", positive: 68, neutral: 22, negative: 10 }
     ],
     keyTopics: [
-      { topic: "Cloud Services Growth", weight: 85, sentiment: "positive" },
-      { topic: "Revenue Performance", weight: 78, sentiment: "positive" },
-      { topic: "Strategic Acquisitions", weight: 72, sentiment: "positive" },
-      { topic: "Executive Changes", weight: 60, sentiment: "neutral" },
-      { topic: "AI Market Competition", weight: 52, sentiment: "negative" }
+      { topic: "Cloud Services Growth", weight: 85, sentiment: "positive" as "positive" | "neutral" | "negative" },
+      { topic: "Revenue Performance", weight: 78, sentiment: "positive" as "positive" | "neutral" | "negative" },
+      { topic: "Strategic Acquisitions", weight: 72, sentiment: "positive" as "positive" | "neutral" | "negative" },
+      { topic: "Executive Changes", weight: 60, sentiment: "neutral" as "positive" | "neutral" | "negative" },
+      { topic: "AI Market Competition", weight: 52, sentiment: "negative" as "positive" | "neutral" | "negative" }
     ],
     sentimentSummary: "TCS is currently experiencing strong positive sentiment in the market, primarily driven by its cloud services growth and robust financial performance. Recent major contract wins have contributed significantly to investor confidence. The company's strategic acquisitions are viewed favorably, though some concerns exist regarding increased competition in the AI services space. Analyst reports generally maintain 'Buy' or 'Hold' recommendations, with expectations for continued growth in the coming quarters. Social media sentiment is mostly positive with particularly strong engagement around new product announcements and digital transformation case studies."
   },
   {
     companyId: "2", // HDFC Bank
     companyName: "HDFC Bank",
-    currentSentiment: "neutral",
+    currentSentiment: "neutral" as "positive" | "neutral" | "negative",
     sentimentScore: 61,
     sentimentHistory: [
       { date: "Jan", score: 70, volume: 3120 },
@@ -472,11 +472,11 @@ export const mockSentimentData = [
       { source: "Analyst Reports", positive: 55, neutral: 35, negative: 10 }
     ],
     keyTopics: [
-      { topic: "Rural Banking Expansion", weight: 81, sentiment: "positive" },
-      { topic: "Digital Banking Initiatives", weight: 76, sentiment: "positive" },
-      { topic: "Asset Quality", weight: 58, sentiment: "neutral" },
-      { topic: "App Technical Issues", weight: 65, sentiment: "negative" },
-      { topic: "Regulatory Compliance", weight: 62, sentiment: "neutral" }
+      { topic: "Rural Banking Expansion", weight: 81, sentiment: "positive" as "positive" | "neutral" | "negative" },
+      { topic: "Digital Banking Initiatives", weight: 76, sentiment: "positive" as "positive" | "neutral" | "negative" },
+      { topic: "Asset Quality", weight: 58, sentiment: "neutral" as "positive" | "neutral" | "negative" },
+      { topic: "App Technical Issues", weight: 65, sentiment: "negative" as "positive" | "neutral" | "negative" },
+      { topic: "Regulatory Compliance", weight: 62, sentiment: "neutral" as "positive" | "neutral" | "negative" }
     ],
     sentimentSummary: "HDFC Bank is currently experiencing mixed sentiment, with slightly positive overall market perception. The bank's rural expansion initiatives and digital banking innovations are viewed positively by investors and analysts. However, recent technical issues with the mobile banking application have negatively impacted customer sentiment across social media platforms. Asset quality shows some signs of pressure, though analysts generally consider this a temporary concern in line with broader economic conditions. Regulatory compliance metrics remain strong, contributing to institutional investor confidence. The bank's strategic partnerships are generating positive attention, though the market is adopting a wait-and-see approach regarding their long-term impact."
   }
