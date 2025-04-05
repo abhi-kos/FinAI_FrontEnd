@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Plus, Search, Star, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -321,23 +320,21 @@ const FavoritesView = () => {
         </div>
       </div>
       
-      {/* Sector filters - now with responsive scrolling */}
-      <div className="mb-6">
-        <ScrollArea className="pb-2" orientation="horizontal">
-          <div className="flex space-x-2 min-w-max p-1">
-            {sectors.map(sector => (
-              <Button
-                key={sector}
-                variant={selectedSector === sector || (!selectedSector && sector === 'All') ? "default" : "outline"}
-                onClick={() => setSelectedSector(sector === 'All' ? null : sector)}
-                size="sm"
-                className="whitespace-nowrap"
-              >
-                {sector}
-              </Button>
-            ))}
-          </div>
-        </ScrollArea>
+      {/* Sector filters - with fixed horizontal scrolling issue */}
+      <div className="mb-6 overflow-x-auto">
+        <div className="flex space-x-2 min-w-max p-1">
+          {sectors.map(sector => (
+            <Button
+              key={sector}
+              variant={selectedSector === sector || (!selectedSector && sector === 'All') ? "default" : "outline"}
+              onClick={() => setSelectedSector(sector === 'All' ? null : sector)}
+              size="sm"
+              className="whitespace-nowrap"
+            >
+              {sector}
+            </Button>
+          ))}
+        </div>
       </div>
       
       {searchTerm && (
