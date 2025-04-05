@@ -202,7 +202,7 @@ const CompanyOverview = ({ companyId }: CompanyOverviewProps) => {
       </div>
       
       {/* Stock Chart */}
-      {company.stockChartData && (
+      {company.stockChartData && company.stockChartData.length > 0 && (
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Stock Performance</CardTitle>
@@ -211,40 +211,41 @@ const CompanyOverview = ({ companyId }: CompanyOverviewProps) => {
             <div className="h-80">
               <ChartContainer config={chartConfig}>
                 <ResponsiveContainer width="100%" height="100%">
-                  <>
-                    <AreaChart data={company.stockChartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                      <defs>
-                        <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#10b981" stopOpacity={0.8}/>
-                          <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
-                        </linearGradient>
-                      </defs>
-                      <XAxis 
-                        dataKey="date" 
-                        tickLine={false}
-                        axisLine={false}
-                        tick={{ fontSize: 12 }}
-                        tickFormatter={(value) => value}
-                      />
-                      <YAxis 
-                        tickLine={false}
-                        axisLine={false}
-                        tick={{ fontSize: 12 }}
-                        domain={['auto', 'auto']}
-                        tickFormatter={(value) => `$${value}`}
-                      />
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                      <ChartTooltip content={<ChartTooltipContent />} />
-                      <Area 
-                        type="monotone" 
-                        dataKey="price" 
-                        stroke="#10b981" 
-                        fillOpacity={1} 
-                        fill="url(#colorPrice)" 
-                        strokeWidth={2}
-                      />
-                    </AreaChart>
-                  </>
+                  <AreaChart 
+                    data={company.stockChartData} 
+                    margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+                  >
+                    <defs>
+                      <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                      </linearGradient>
+                    </defs>
+                    <XAxis 
+                      dataKey="date" 
+                      tickLine={false}
+                      axisLine={false}
+                      tick={{ fontSize: 12 }}
+                      tickFormatter={(value) => value}
+                    />
+                    <YAxis 
+                      tickLine={false}
+                      axisLine={false}
+                      tick={{ fontSize: 12 }}
+                      domain={['auto', 'auto']}
+                      tickFormatter={(value) => `$${value}`}
+                    />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                    <Area 
+                      type="monotone" 
+                      dataKey="price" 
+                      stroke="#10b981" 
+                      fillOpacity={1} 
+                      fill="url(#colorPrice)" 
+                      strokeWidth={2}
+                    />
+                  </AreaChart>
                 </ResponsiveContainer>
               </ChartContainer>
             </div>
@@ -260,9 +261,9 @@ const CompanyOverview = ({ companyId }: CompanyOverviewProps) => {
               <CardContent className="pt-6">
                 <p className="text-sm text-muted-foreground">{metric.title}</p>
                 <div className="mt-1 flex items-center justify-between">
-                  <p className="text-2xl font-bold">{metric.value}</p>
+                  <p className="text-xl font-bold text-wrap-anywhere overflow-hidden">{metric.value}</p>
                   {metric.change !== undefined && (
-                    <div className={`text-sm ${metric.change >= 0 ? "text-positive" : "text-negative"}`}>
+                    <div className={`text-xs ${metric.change >= 0 ? "text-positive" : "text-negative"}`}>
                       {metric.change >= 0 ? "+" : ""}{metric.change}
                       {metric.changePercentage && ` (${metric.changePercentage}%)`}
                     </div>

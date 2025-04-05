@@ -53,5 +53,8 @@
 /* Improve text overflow handling */
 .text-wrap-anywhere {
   overflow-wrap: anywhere;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
