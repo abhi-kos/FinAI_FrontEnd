@@ -17,7 +17,6 @@ import {
   XAxis, 
   YAxis, 
   CartesianGrid, 
-  ResponsiveContainer,
   Tooltip,
   Legend
 } from "recharts";
@@ -100,27 +99,20 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
     }
   };
   
-  // Custom Label Component for the Pie Chart
-  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, name }: any) => {
-    // Only show labels for values that are significant enough (e.g., > 5%)
-    if (percent < 0.05) return null;
-    
-    const radius = outerRadius * 0.8;
-    const RADIAN = Math.PI / 180;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN) * 1.2;
-    const y = cy + radius * Math.sin(-midAngle * RADIAN) * 1.2;
-    
+  // Generate legend items for sentiment distribution
+  const renderLegendItems = () => {
     return (
-      <text 
-        x={x} 
-        y={y} 
-        fill="#333333" 
-        textAnchor={x > cx ? 'start' : 'end'} 
-        dominantBaseline="central"
-        className="text-xs"
-      >
-        {`${name} ${(percent * 100).toFixed(0)}%`}
-      </text>
+      <div className="grid grid-cols-1 gap-2 mt-4">
+        {sentimentData.sentimentDistribution.map((entry, index) => (
+          <div key={index} className="flex items-center gap-2">
+            <div 
+              className="w-3 h-3 rounded-sm" 
+              style={{ backgroundColor: entry.color }} 
+            />
+            <span className="text-xs">{entry.name}: {(entry.value * 100).toFixed(0)}%</span>
+          </div>
+        ))}
+      </div>
     );
   };
   
@@ -140,33 +132,37 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
           </CardContent>
         </Card>
         
-        {/* Sentiment Distribution Card */}
+        {/* Sentiment Distribution Card - Completely reworked */}
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Sentiment Distribution</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-[210px] w-full flex items-center justify-center">
-              <PieChart width={200} height={200}>
-                <Pie
-                  data={sentimentData.sentimentDistribution}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={renderCustomizedLabel}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {sentimentData.sentimentDistribution.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip 
-                  formatter={(value) => `${(value as number * 100).toFixed(0)}%`} 
-                  contentStyle={{ backgroundColor: "white", borderRadius: "8px", border: "1px solid #e2e8f0" }}
-                />
-              </PieChart>
+            <div className="flex flex-row items-center justify-between h-[210px]">
+              <div className="w-1/2 h-full">
+                <PieChart width={150} height={150}>
+                  <Pie
+                    data={sentimentData.sentimentDistribution}
+                    cx={75}
+                    cy={75}
+                    innerRadius={0}
+                    outerRadius={60}
+                    paddingAngle={2}
+                    dataKey="value"
+                  >
+                    {sentimentData.sentimentDistribution.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip 
+                    formatter={(value) => `${(Number(value) * 100).toFixed(0)}%`} 
+                    contentStyle={{ backgroundColor: "white", borderRadius: "8px", border: "1px solid #e2e8f0" }}
+                  />
+                </PieChart>
+              </div>
+              <div className="w-1/2">
+                {renderLegendItems()}
+              </div>
             </div>
           </CardContent>
         </Card>

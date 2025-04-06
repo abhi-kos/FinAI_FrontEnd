@@ -127,3 +127,16 @@
   opacity: 0.9;
 }
 
+/* New styles specifically for pie charts */
+.recharts-pie {
+  outline: none;
+}
+
+.recharts-sector {
+  outline: none;
+  transition: opacity 0.3s;
+}
+
+.recharts-sector:hover {
+  opacity: 0.8;
+}
