@@ -1,4 +1,3 @@
-
 export const mockCompanyData = [
   {
     id: "1",

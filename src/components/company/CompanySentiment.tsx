@@ -100,12 +100,17 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
     }
   };
   
-  // Fixed formatter to display percentages in the 0-100% range
-  const pieChartTooltipFormatter = (value: number) => {
-    // The value is already in decimal form (0.xx), so just multiply by 100
-    return `${(value * 100).toFixed(1)}%`;
+  // Format percentage value for display
+  const formatPercentage = (value: number) => {
+    // Handle actual percentage value (0-100)
+    if (value % 1 === 0) {
+      return `${value}%`; // No decimal places for whole numbers
+    } else {
+      return `${value.toFixed(1)}%`; // 1 decimal place for fractional numbers
+    }
   };
-  
+
+  // Pie chart labels and tooltips
   const renderLegendItems = () => {
     return (
       <div className="grid grid-cols-1 gap-2 mt-4">
@@ -115,16 +120,16 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
               className="w-3 h-3 rounded-sm" 
               style={{ backgroundColor: entry.color }} 
             />
-            <span className="text-xs">{entry.name}: {pieChartTooltipFormatter(entry.value)}</span>
+            <span className="text-xs">{entry.name}: {formatPercentage(entry.value)}</span>
           </div>
         ))}
       </div>
     );
   };
 
-  // Custom formatter for the sentiment by source chart
+  // Custom tooltip formatter for sentiment by source chart
   const sourceTooltipFormatter = (value: number, name: string) => {
-    return [`${value}%`, name];
+    return [formatPercentage(value), name];
   };
   
   return (
@@ -164,8 +169,12 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
                     ))}
                   </Pie>
                   <Tooltip 
-                    formatter={pieChartTooltipFormatter} 
-                    contentStyle={{ backgroundColor: "white", borderRadius: "8px", border: "1px solid #e2e8f0" }}
+                    formatter={(value) => formatPercentage(Number(value))}
+                    contentStyle={{ 
+                      backgroundColor: "white", 
+                      borderRadius: "8px", 
+                      border: "1px solid #e2e8f0" 
+                    }}
                   />
                 </PieChart>
               </div>
@@ -247,7 +256,7 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
           <CardTitle className="text-lg">Sentiment by Source</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-80 w-full">
+          <div className="h-96 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={sentimentData.sentimentBySource}
@@ -257,6 +266,8 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
                   left: 20,
                   bottom: 40
                 }}
+                barGap={0}
+                barCategoryGap="15%"
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis 
@@ -264,7 +275,7 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
                   angle={-45} 
                   textAnchor="end" 
                   height={70}
-                  tick={{ fontSize: 12 }}
+                  tick={{ fontSize: 13 }}
                 />
                 <YAxis 
                   width={55}
@@ -282,19 +293,40 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
                     backgroundColor: "white", 
                     borderRadius: "8px", 
                     border: "1px solid #e2e8f0",
-                    fontSize: "12px"
+                    fontSize: "12px",
+                    padding: "8px 12px"
                   }}
                   itemStyle={{ padding: "2px 0" }}
+                  cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }}
                 />
                 <Legend 
                   wrapperStyle={{ 
                     paddingTop: "10px", 
-                    fontSize: "12px" 
-                  }} 
+                    fontSize: "13px",
+                    fontWeight: 500
+                  }}
+                  iconType="circle" 
+                  iconSize={8}
                 />
-                <Bar dataKey="positive" stackId="a" fill="#10b981" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="neutral" stackId="a" fill="#f59e0b" />
-                <Bar dataKey="negative" stackId="a" fill="#ef4444" />
+                <Bar 
+                  dataKey="positive" 
+                  stackId="a" 
+                  fill="#10b981" 
+                  name="Positive"
+                  radius={[4, 4, 0, 0]} 
+                />
+                <Bar 
+                  dataKey="neutral" 
+                  stackId="a" 
+                  fill="#f59e0b" 
+                  name="Neutral"
+                />
+                <Bar 
+                  dataKey="negative" 
+                  stackId="a" 
+                  fill="#ef4444" 
+                  name="Negative"
+                />
               </BarChart>
             </ResponsiveContainer>
           </div>
