@@ -99,6 +99,11 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
     }
   };
   
+  // Custom tooltip formatter for the pie chart
+  const pieChartTooltipFormatter = (value: number) => {
+    return `${(value * 100).toFixed(1)}%`;
+  };
+  
   // Generate legend items for sentiment distribution
   const renderLegendItems = () => {
     return (
@@ -109,7 +114,7 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
               className="w-3 h-3 rounded-sm" 
               style={{ backgroundColor: entry.color }} 
             />
-            <span className="text-xs">{entry.name}: {(entry.value * 100).toFixed(0)}%</span>
+            <span className="text-xs">{entry.name}: {pieChartTooltipFormatter(entry.value)}</span>
           </div>
         ))}
       </div>
@@ -155,7 +160,7 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
                     ))}
                   </Pie>
                   <Tooltip 
-                    formatter={(value) => `${(Number(value) * 100).toFixed(0)}%`} 
+                    formatter={pieChartTooltipFormatter} 
                     contentStyle={{ backgroundColor: "white", borderRadius: "8px", border: "1px solid #e2e8f0" }}
                   />
                 </PieChart>
