@@ -1,9 +1,12 @@
+
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
   ChartContainer, 
   ChartTooltip, 
-  ChartTooltipContent
+  ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent
 } from "@/components/ui/chart";
 import { 
   AreaChart, 
@@ -17,7 +20,8 @@ import {
   YAxis, 
   CartesianGrid, 
   Tooltip,
-  Legend
+  Legend,
+  ResponsiveContainer
 } from "recharts";
 import { mockSentimentData } from "./mockData";
 
@@ -96,7 +100,9 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
     }
   };
   
+  // Fixed formatter to display percentages in the 0-100% range
   const pieChartTooltipFormatter = (value: number) => {
+    // The value is already in decimal form (0.xx), so just multiply by 100
     return `${(value * 100).toFixed(1)}%`;
   };
   
@@ -114,6 +120,11 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
         ))}
       </div>
     );
+  };
+
+  // Custom formatter for the sentiment by source chart
+  const sourceTooltipFormatter = (value: number, name: string) => {
+    return [`${value}%`, name];
   };
   
   return (
@@ -235,23 +246,57 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
         <CardHeader>
           <CardTitle className="text-lg">Sentiment by Source</CardTitle>
         </CardHeader>
-        <CardContent className="p-4">
-          <div className="h-60 sm:h-80 w-full">
-            <BarChart
-              width={500}
-              height={300}
-              data={sentimentData.sentimentBySource}
-              margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="source" />
-              <YAxis width={50} />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="positive" stackId="a" fill="#10b981" />
-              <Bar dataKey="neutral" stackId="a" fill="#f59e0b" />
-              <Bar dataKey="negative" stackId="a" fill="#ef4444" />
-            </BarChart>
+        <CardContent>
+          <div className="h-80 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={sentimentData.sentimentBySource}
+                margin={{
+                  top: 20,
+                  right: 30,
+                  left: 20,
+                  bottom: 40
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis 
+                  dataKey="source" 
+                  angle={-45} 
+                  textAnchor="end" 
+                  height={70}
+                  tick={{ fontSize: 12 }}
+                />
+                <YAxis 
+                  width={55}
+                  tick={{ fontSize: 12 }}
+                  label={{ 
+                    value: 'Percentage', 
+                    angle: -90, 
+                    position: 'insideLeft',
+                    style: { textAnchor: 'middle' }
+                  }} 
+                />
+                <Tooltip 
+                  formatter={sourceTooltipFormatter}
+                  contentStyle={{ 
+                    backgroundColor: "white", 
+                    borderRadius: "8px", 
+                    border: "1px solid #e2e8f0",
+                    fontSize: "12px"
+                  }}
+                  itemStyle={{ padding: "2px 0" }}
+                />
+                <Legend 
+                  wrapperStyle={{ 
+                    paddingTop: "10px", 
+                    fontSize: "12px" 
+                  }} 
+                />
+                <Bar dataKey="positive" stackId="a" fill="#10b981" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="neutral" stackId="a" fill="#f59e0b" />
+                <Bar dataKey="negative" stackId="a" fill="#ef4444" />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
         </CardContent>
       </Card>
