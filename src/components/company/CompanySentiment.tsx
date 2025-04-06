@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
@@ -59,7 +58,6 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
   const [sentimentData, setSentimentData] = useState<SentimentData | null>(null);
   
   useEffect(() => {
-    // In a real app, this would be an API call
     const data = mockSentimentData.find(d => d.companyId === companyId) || null;
     
     setTimeout(() => {
@@ -71,7 +69,6 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
     return <div className="flex justify-center items-center h-64">Loading sentiment data...</div>;
   }
   
-  // Define chart configs
   const sentimentHistoryConfig = {
     score: {
       label: "Sentiment Score",
@@ -99,12 +96,10 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
     }
   };
   
-  // Custom tooltip formatter for the pie chart
   const pieChartTooltipFormatter = (value: number) => {
     return `${(value * 100).toFixed(1)}%`;
   };
   
-  // Generate legend items for sentiment distribution
   const renderLegendItems = () => {
     return (
       <div className="grid grid-cols-1 gap-2 mt-4">
@@ -124,7 +119,6 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
   return (
     <div className="space-y-6 pb-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Sentiment Score Card */}
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Overall Sentiment</CardTitle>
@@ -137,7 +131,6 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
           </CardContent>
         </Card>
         
-        {/* Sentiment Distribution Card - Completely reworked */}
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Sentiment Distribution</CardTitle>
@@ -172,7 +165,6 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
           </CardContent>
         </Card>
         
-        {/* Key Topics Card */}
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Key Topics</CardTitle>
@@ -203,7 +195,6 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
         </Card>
       </div>
       
-      {/* Sentiment History Chart */}
       <Card>
         <CardHeader>
           <CardTitle className="text-lg">Sentiment Trend Over Time</CardTitle>
@@ -240,7 +231,6 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
         </CardContent>
       </Card>
       
-      {/* Sentiment by Source */}
       <Card>
         <CardHeader>
           <CardTitle className="text-lg">Sentiment by Source</CardTitle>
@@ -266,7 +256,6 @@ const CompanySentiment = ({ companyId }: CompanySentimentProps) => {
         </CardContent>
       </Card>
       
-      {/* Sentiment Summary */}
       <Card>
         <CardHeader>
           <CardTitle className="text-lg">Sentiment Analysis Summary</CardTitle>
